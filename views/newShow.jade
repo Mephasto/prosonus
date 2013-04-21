@@ -1,0 +1,31 @@
+extends admin-layout
+block content
+    div(id='verticalNav')
+        ul
+            li(class='active')
+                a(href='/shows/new')=('Cargar fecha')
+            li
+                a(href='/shows/delete')=('Borrar fecha')
+            li
+                a(href='/fans/')=('Fan mail list')
+    article
+        if message != ''
+            h3=message
+        form(action='',method='post')
+            label(for='title')=('Título')
+            input(name='title',type='text')
+
+            label(for='place')=('Dirección')
+            input(name='place',type='text')
+
+            label(for='body')=('Cuerpo')
+            textarea(name='body',type='textarea')
+
+            label(for='date')=('Fecha')
+            input(name='date',type='text',id='datepicker')
+
+            label(for='time')=('Hora')
+            input(name='time',type='text',id='timepicker')
+
+            input(type='submit',value='Crear!')
+

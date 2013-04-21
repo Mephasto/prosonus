@@ -1,0 +1,31 @@
+footer
+  p=('vidriorock@gmail.com')
+  iframe(src='http://www.facebook.com/plugins/like.php?href=http://www.estadovitreo.com.ar', scrolling='no', frameborder='0', style='border: none; width: 450px; height: 80px;')
+
+  script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+  script(type='text/javascript',src='/js/libs/jquery.js')
+  script(type='text/javascript',src='/js/libs/jquery.ui.timepicker.js')
+  script(type='text/javascript',src='/js/libs/jqueryui/js/jquery-ui-1.9.2.custom.min.js')
+  script(type='text/javascript',src='/js/libs/bootstrap/js/bootstrap.min.js')
+  script(type='text/javascript',src='/js/script.js')
+  //script(type='text/javascript', src='/js/libs/sound-cloud/soundcloud.player.api.js')
+  //script(type='text/javascript', src='/js/libs/sound-cloud/sc-player.js')
+  if (gallery)
+    script(src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js")
+    script(type='text/javascript',src='/js/libs/bootstrap-image-gallery/js/bootstrap-image-gallery.min.js')
+    script(type='text/javascript',src='/js/libs/picasa-photo-gallery.js')
+  if (blog)
+    script(type='text/javascript',src='/js/blog.js') 
+  script 
+    window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\\/script>')
+  //-script(defer, src='js/plugins.js')
+  script(defer, src='/js/script.js')
+    script
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+  //if lt IE 7
+    script(defer, src='//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js')
+    script(defer)
+      window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})

@@ -1,0 +1,24 @@
+{
+  "name": "prosonus",
+  "description": "ProSonus web page",
+  "author": "Mephasto <nicdakka@gmail.com>",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.x",
+    "jade": "0.26.3",
+    "mongoose": "3.5.5"
+  },
+  "devDependencies": {
+    "vows": "0.5.x",
+    "mocha": "*",
+    "should": "*"
+  },
+  "engine": "node >= 0.8.x",
+  "subdomain": "mephasto.prosonus",
+  "scripts": {
+    "start": "server.js"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}

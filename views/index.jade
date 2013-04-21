@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    article(id='homeShows')
+        each show in shows
+            - var imgSrc = '/images/shows/' + show._id + '.png';
+            - var showDate = new Date(show.date);
+            - var today = new Date();
+            - if (showDate >= today) {
+            div(class='show new' ,id=show._id)
+                h4=show.title
+                h5=show.time
+                div(class='body')
+                    p(class='place')=show.place
+                    p=show.body
+                img(src=imgSrc)
+            - }
+    article(id='homePosts')
+
+

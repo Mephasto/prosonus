@@ -1,0 +1,19 @@
+extends admin-layout
+block content
+    div(id='verticalNav')
+        ul
+            li
+                a(href='/shows/new')=('Cargar fecha')
+            li(class='active')
+                a(href='/shows/delete')=('Borrar fecha')
+            li
+                a(href='/fans/')=('Fan mail list')
+    article
+        if message != ''
+            h3=message
+        form(action='',method='post')
+            label(for='id')=('ID')
+            input(name='id',type='text')
+            br
+            input(type='submit',value='Borrar fecha!')
+

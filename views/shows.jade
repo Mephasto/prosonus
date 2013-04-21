@@ -1,0 +1,46 @@
+extends layout
+
+block content
+    div(id='verticalNav')
+        ul
+            each show in shows
+                li
+                    - var today = new Date();
+                    - var showDate = new Date(show.date);
+                    - if (showDate > today) {
+                    -   if (!next) {
+                    span=('Próximos shows:')
+                    -       var next = true;
+                    -   }
+                    - }else{
+                    -   if (!hist) {
+                    span=('Historial:')
+                    -       var hist = true;
+                    -   }
+                    - }
+                    a(href='#'+show._id)=(show.title)
+    article
+        each show in shows
+            - var today = new Date();
+            - var imgSrc = '/images/shows/' + show._id + '.png';
+            - var showDate = new Date(show.date);
+            - if (showDate > today) {
+            -   var status = 'new';
+            - }else{
+            -    var status ='old';
+            - }
+            
+            div(class='show ' + status ,id=show._id)
+                h4=show.title
+                h5=show.time
+                h3=show.when
+                div(class='body')
+                    p(class='place')=show.place
+                    p=show.body
+                img(src=imgSrc)
+                    
+div(id='mailListBox')
+    form()
+        label(for='mailListInput')=('Te avisamos cuando toca VIDRIO:')
+        input(id='mailListInput',name='mailListInput',type='text',value='dejanos tu email')
+        input(value='Enviar mail',type='submit')        
