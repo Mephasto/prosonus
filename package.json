@@ -2,7 +2,7 @@
   "name": "prosonus",
   "description": "ProSonus web page",
   "author": "Mephasto <nicdakka@gmail.com>",
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "dependencies": {
     "express": "3.x",
     "jade": "0.26.3",

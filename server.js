@@ -17,7 +17,7 @@ mongoose.connect('mongodb://mephasto:Floryudoka1@ds045027.mongolab.com:45027/vid
 var models = require('./models');
 
 server.locals = { 
-                  title : 'VIDRIO Trip Instrumental'
+                  title : 'ProSonus'
                   ,description: ''
                   ,author: ''
                   ,analyticssiteid: 'XXXXXXX'
@@ -76,8 +76,7 @@ server.get('/shows', function(req,res){
   var query = models.Show.find();
   query.sort('date').execFind(function (err, shows) {
     if(err === null){
-      res.render('shows.jade', { 
-                  title : 'VIDRIO - Shows',
+      res.render('shows.jade', {
                   shows : shows,
                   activeNav : 'shows'
                 }
@@ -91,7 +90,6 @@ server.get('/', function(req,res){
   models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
     if(err === null){
       res.render('index.jade', {
-                  title : 'VIDRIO Trip Instrumental',
                   activeNav : 'home',
                   shows : shows,
                   blog : true
@@ -99,43 +97,6 @@ server.get('/', function(req,res){
       );
     }
   });
-});
-
-// VIDEOS
-server.get('/videos', function(req,res){
-  res.render('videos.jade', {
-              title : 'VIDRIO - Videos',
-              activeNav : 'videos'
-            }
-  );
-});
-
-//ALBUMS
-server.get('/albums', function(req,res){
-  res.render('albums.jade', {
-              title : 'VIDRIO - Albums',
-              activeNav : 'albums'
-            }
-  );
-});
-
-//PHOTOS
-server.get('/photos', function(req,res){
-  res.render('photos.jade', {
-              title : 'VIDRIO - Fotos',
-              activeNav : 'fotos',
-              gallery: true
-            }
-  );
-});
-
-//BIO
-server.get('/bio', function(req,res){
-  res.render('bio.jade', {
-              title : 'VIDRIO - Bio',
-              activeNav : 'bio'
-            }
-  );
 });
 
 //A Route for Creating a 500 Error (Useful to keep around)
