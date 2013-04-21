@@ -13,8 +13,8 @@ server.use(express.static(__dirname + '/static'));
 server.listen(port);
 
 //DB connection
-mongoose.connect('mongodb://mephasto:Floryudoka1@ds045027.mongolab.com:45027/vidrio-website');
-var models = require('./models');
+//mongoose.connect('mongodb://mephasto:Floryudoka1@ds045027.mongolab.com:45027/vidrio-website');
+//var models = require('./models');
 
 server.locals = { 
                   title : 'ProSonus'
@@ -87,6 +87,7 @@ server.get('/shows', function(req,res){
 
 // HOME
 server.get('/', function(req,res){
+  /*
   models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
     if(err === null){
       res.render('index.jade', {
@@ -97,6 +98,7 @@ server.get('/', function(req,res){
       );
     }
   });
+  */
 });
 
 //A Route for Creating a 500 Error (Useful to keep around)
