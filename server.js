@@ -87,15 +87,15 @@ server.get('/shows', function(req,res){
 
 // HOME
 server.get('/', function(req,res){
+  res.render('index.jade', {
+              activeNav : 'home',
+              shows : shows,
+              blog : true
+            }
+  );
   /*
   models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
     if(err === null){
-      res.render('index.jade', {
-                  activeNav : 'home',
-                  shows : shows,
-                  blog : true
-                }
-      );
     }
   });
   */
