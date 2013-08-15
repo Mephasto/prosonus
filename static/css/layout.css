@@ -4,7 +4,7 @@ font-family: 'Ubuntu', sans-serif;
 font-family: 'Bowlby One SC', cursive;
 */
 body {
-    background: url('../images/dark-noisy-texture_x.png') #000;
+    background: url('../images/estudio.jpg') center center no-repeat #000;
 }
 a, p {
     white-space:pre-line;
@@ -24,27 +24,32 @@ form {
 /* Header */
 header h1 {
     margin: 0;
-    text-align: center;
-    font-size: 120px;
-    line-height: 160px;
-    font-weight: normal;
-    opacity: 0.8;
-    color: #030502;
-    text-shadow: 0px 0px 25px rgba(200,222,199,0.5);
+    margin: 10px auto 0px auto;
+    width: 350px;
+    height: 135px;
+    overflow: hidden;
+    text-indent: 900px;
+    background: url('../images/prosonus-logo.png') center bottom no-repeat;
 }
 header h2 {
     clear: both;
-    width: 100%;
-    font-size: 24px;
+    width: 300px;
+    float: left;
+    position: relative;
+    top: 25px;
+    margin: 0px auto 0px auto;
+    padding: 5px 30px;
+    font-size: 20px;
+    color: #000;
     text-align: center;
-    margin: -20px 0px 0px 0px;
-    font-weight: normal;
-    text-indent: 6px;
-    letter-spacing: 7px;
-    opacity: 0.5;
-    border-radius: 5px;
-    box-shadow: 0px 10px 30px rgba(0,0,0,1);
-    background: url('../images/dark-noisy-texture_y.png');
+    font-weight: bold;
+    text-transform: uppercase;
+    text-indent: 40px;
+    letter-spacing: 40px;
+    opacity: 1;
+    z-index: 99;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.95);
+    background: #fefefe;
 }
 header h1, header h2 {
     transition: background-color 1s, color 1s;
@@ -62,13 +67,15 @@ header h1, header h2 {
 }
 article {
     margin-top: 25px;
+    min-height: 450px;
     float: left;
+    background: url('../images/dark-noisy-texture.png');
+    box-shadow: 0px 10px 10px rgba(0,0,0,1);
 }
 
 /* Header */
 header {
-    height: 220px;
-    font-family: 'Bowlby One SC', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 68px;
     color: black;
 }
@@ -83,11 +90,16 @@ header audio {
 #homeShows .show {
     width: 100%;
 }
-#homePosts {
+#mainArticle {
+    clear: both;
     width: 59%;
+    min-width: 400px;
     color: #fcfcf9;
+    padding: 10px;
+    position: relative;
+    top: -50px;
 }
-#homePosts h4 {
+#mainArticle h4 {
     font-size: 29px;
     text-transform: uppercase;
     font-family: 'Overlock', cursive;
@@ -96,18 +108,18 @@ header audio {
     margin: 0px 0px 10px 0px;
     text-shadow: 0px 1px 4px rgb(0,0,0);
 }
-#homePosts .post {
+#mainArticle .post {
     background: rgba(14,13,17,0.5);
     padding: 20px 2% 20px 4%;
     box-shadow: 0px 5px 10px rgba(0,0,0,0.9);
     border-radius: 10px;
     margin-bottom: 20px;
 }
-#homePosts div {
+#mainArticle div {
     display: block;
     font-size: 12px;
 }
-#homePosts img {
+#mainArticle img {
     float: left;
     margin: 0px 10px 10px 0px;
     box-shadow: 0px 5px 10px rgba(0,0,0,0.9);
@@ -136,10 +148,6 @@ header audio {
 }
 #bc-player {
     float: left;
-}
-#titles {
-    float: left;
-    width: 100%;
 }
 #mailListBox {
     float: right;
@@ -194,10 +202,13 @@ header audio {
 
 /* Navigations */
 #nav {
-    width: 500px;
-    clear: both;
-    float: left;
-    margin: 25px 0px 0px 0px;
+    display: block;
+    width: 470px;
+    min-height: 20px;
+    margin: 25px auto 0px auto;
+    background: url('../images/dark-noisy-texture.png');
+    padding: 10px;
+    opacity: 0.95;
 }
 #nav ul {
     width: 500px;
@@ -238,8 +249,8 @@ header audio {
 }
 #nav a.active,
 #verticalNav .active a {
-    background: #333;
-    color: #fff;
+    background: #fff;
+    color: #222;
 }
 #verticalNav ul li a {
     display: block;
@@ -404,12 +415,16 @@ header audio {
 
 /* Footer */
 footer {
-    float: left;
+    clear: both;
     height: 40px;
-    width: 1024px;
-    margin: 30px 0px 10px 0px;
-    background: rgba(134,59,88,0.2);
-    border-radius: 20px; 
+    width: 90%;
+    margin: 30px auto 10px auto;
+    background: url('../images/dark-noisy-texture.png');
+    border-radius: 4px;
+    opacity: 0.95;
+}
+footer:hover {
+    opacity: 1;
 }
 footer p {
     margin-left: 20px;

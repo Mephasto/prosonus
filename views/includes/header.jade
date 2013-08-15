@@ -1,39 +1,38 @@
 header
-    div(id='titles')
-        h1=('ProSonus')
-        h2=(activeNav)
-        div(id='nav')
-            ul
-                li
-                    if activeNav== 'home'
-                        a(href='/',class='active')=('Home')
-                    else
-                        a(href='/')=('Home')
-                li
-                    if activeNav=='servicios'
-                        a(href='/services',class='active')=('Servicios')
-                    else
-                        a(href='/services')=('Servicios')
-                li
-                    if activeNav=='shows'
-                        a(href='/shows',class='active')=('Shows')
-                    else
-                        a(href='/shows')=('Shows')
-                li
-                    if activeNav=='videos'
-                        a(href='/videos',class='active')=('Videos')
-                    else
-                        a(href='/videos')=('Videos')
-                li
-                    if activeNav=='fotos'
-                        a(href='/photos',class='active')=('Fotos')
-                    else
-                        a(href='/photos')=('Fotos')
-                li
-                    if activeNav=='bio'
-                        a(href='/bio',class='active')=('Bio')
-                    else
-                        a(href='/bio')=('Bio')
+    h1=('proSonus')
+    div(id='nav')
+        ul
+            li
+                if activeNav== 'studio'
+                    a(href='/',class='active')=('Estudio')
+                else
+                    a(href='/')=('Estudio')
+            li
+                if activeNav=='servicios'
+                    a(href='/services',class='active')=('Servicios')
+                else
+                    a(href='/services')=('Servicios')
+            li
+                if activeNav=='shows'
+                    a(href='/shows',class='active')=('Shows')
+                else
+                    a(href='/shows')=('Shows')
+            li
+                if activeNav=='videos'
+                    a(href='/videos',class='active')=('Videos')
+                else
+                    a(href='/videos')=('Videos')
+            li
+                if activeNav=='fotos'
+                    a(href='/photos',class='active')=('Fotos')
+                else
+                    a(href='/photos')=('Fotos')
+            li
+                if activeNav=='bio'
+                    a(href='/bio',class='active')=('Bio')
+                else
+                    a(href='/bio')=('Bio')
+    h2=(activeNav)
 
     //- audio(controls loop)
     //-     if activeNav=='home'

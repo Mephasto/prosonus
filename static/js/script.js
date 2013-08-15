@@ -1,12 +1,11 @@
 /*
-    Author: YOUR NAME HERE
+    Author: Mephasto
 */
 $(document).ready(function() {
-    console.log('asdasd');
     'use strict';
 
     var mailListInput, animate, changeColor, elem, fps = 60;
-
+/*
     elem = $('header h2');
     animate = function () {
         elem.css('background-position', Math.floor(Math.random()*255) + 'px ' + Math.floor(Math.random()*255) + 'px' );
@@ -22,7 +21,7 @@ $(document).ready(function() {
     elem.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend', changeColor);
     changeColor();
     animate();
-
+*/
 
     $('#datepicker').datepicker();
     $('#timepicker').timepicker();
