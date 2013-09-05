@@ -31,7 +31,7 @@ server.locals = {
 ///////////////////////////////////////////
 
 /////// ADD ALL YOUR ROUTES HERE  /////////
-
+/*
 // SHOWS - ABM
 server.get('/shows/new', function(req,res){
   res.render('newShow.jade');
@@ -84,11 +84,11 @@ server.get('/shows', function(req,res){
     }
   });
 });
-
+*/
 // HOME
 server.get('/', function(req,res){
   res.render('index.jade', {
-              activeNav : 'home'
+              activeNav : 'none'
             }
   );
   /*
@@ -98,6 +98,21 @@ server.get('/', function(req,res){
   });
   */
 });
+
+// STUDIO
+server.get('/studio', function(req,res){
+  res.render('studio.jade', {
+              activeNav : 'studio'
+            }
+  );
+  /*
+  models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
+    if(err === null){
+    }
+  });
+  */
+});
+
 
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){

@@ -4,44 +4,14 @@ header
         ul
             li
                 if activeNav== 'studio'
-                    a(href='/',class='active')=('Estudio')
+                    a(href='/studio',class='active')=('Estudio')
                 else
-                    a(href='/')=('Estudio')
+                    a(href='/studio')=('Estudio de grabación')
             li
-                if activeNav=='servicios'
-                    a(href='/services',class='active')=('Servicios')
+                if activeNav=='live'
+                    a(href='/live',class='active')=('Sonído en Vivo')
                 else
-                    a(href='/services')=('Servicios')
-            li
-                if activeNav=='shows'
-                    a(href='/shows',class='active')=('Shows')
-                else
-                    a(href='/shows')=('Shows')
-            li
-                if activeNav=='videos'
-                    a(href='/videos',class='active')=('Videos')
-                else
-                    a(href='/videos')=('Videos')
-            li
-                if activeNav=='fotos'
-                    a(href='/photos',class='active')=('Fotos')
-                else
-                    a(href='/photos')=('Fotos')
-            li
-                if activeNav=='bio'
-                    a(href='/bio',class='active')=('Bio')
-                else
-                    a(href='/bio')=('Bio')
-    h2=(activeNav)
+                    a(href='/live')=('Sonído en Vivo')
 
-    //- audio(controls loop)
-    //-     if activeNav=='home'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoZEVUMHNUTFlRQTA/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='fotos'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoaURMOW83YVFqek0/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='shows'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoTVZ3T2l1aGllaUU/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='bio'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoTVZ3T2l1aGllaUU/edit?usp=sharing", type="audio/mpeg")
-    //-     Your browser does not support the audio element.
-
+    if activeNav != 'none'
+        h2=(activeNav)
