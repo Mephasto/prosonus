@@ -1,10 +1,11 @@
 header
     h1=('proSonus')
-    div(id='nav')
-        ul
+        a#home(href='/', title='Home')
+    #nav
+        ul(class=activeNav)
             li
                 if activeNav== 'studio'
-                    a(href='/studio',class='active')=('Estudio')
+                    a(href='/studio',class='active')=('Estudio de grabación')
                 else
                     a(href='/studio')=('Estudio de grabación')
             li
@@ -12,6 +13,16 @@ header
                     a(href='/live',class='active')=('Sonído en Vivo')
                 else
                     a(href='/live')=('Sonído en Vivo')
-
-    if activeNav != 'none'
-        h2=(activeNav)
+            
+            if activeNav== 'studio'
+                    ul
+                        li
+                            if activeNav== 'elestudio'
+                                a(href='/elestudio',class='active')=('El estudio')
+                            else
+                                a(href='/elestudio')=('El estudio')
+                        li
+                            if activeNav=='discos'
+                                a(href='/discos',class='active')=('Discos')
+                            else
+                                a(href='/discos')=('Discos')

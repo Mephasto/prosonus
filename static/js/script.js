@@ -11,7 +11,7 @@ $(document).ready(function() {
         elem.css('background-position', Math.floor(Math.random()*1920) + 'px ' + Math.floor(Math.random()*1284) + 'px' );
         setTimeout(function() {
             requestAnimationFrame(animate, elem);
-        }, 650 / fps);
+        }, 1000 / fps);
     };
 
     
@@ -20,7 +20,11 @@ $(document).ready(function() {
         el.css('color', '#'+ Math.floor(777215 + Math.random()*16000000).toString(16));
     };
     colorWhite = function (el) {
-        el.css('color', '#555');
+        if (el.hasClass('active')){
+            el.css('color', '#fff');
+        }else{
+            el.css('color', '#555');
+        }
     };
 
     $('#nav ul li a').hover(function(){

@@ -88,7 +88,7 @@ server.get('/shows', function(req,res){
 // HOME
 server.get('/', function(req,res){
   res.render('index.jade', {
-              activeNav : 'none'
+              activeNav : 'home'
             }
   );
   /*
