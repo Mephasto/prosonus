@@ -31,6 +31,9 @@ p {
     font-size: 12px;
     color: #ddd;
 }
+article ul {
+    margin: 0 0 10px 15px;
+}
 article ul li {
     margin: 0px;
     font-size: 12px;
@@ -287,12 +290,35 @@ header {
     padding: 0px 0px 15px 0px;
 }
 
+#horizontalNav {
+    clear: both;
+    min-width: 680px;
+    height: 50px;
+    float: left;
+}
+#horizontalNav ul {
+    margin: 25px 0px 0px 0px;
+    padding: 0px;
+}
+#horizontalNav ul li {
+    display: inline-block;
+    list-style: none;
+    float: left;
+    margin-right: 30px;
+    font-family: 'Ubuntu', sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0px 0px 15px 0px;
+}
+
 #nav a.active,
+#horizontalNav .active a,
 #verticalNav .active a {
     background: #000;
     color: #fff;
     box-shadow: 0px 4px 0px #333;
 }
+#horizontalNav ul li a,
 #verticalNav ul li a {
     display: block;
     padding: 5px;
