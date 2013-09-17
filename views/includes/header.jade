@@ -1,47 +1,28 @@
 header
     h1=('proSonus')
-    div(id='nav')
-        ul
+        a#home(href='/', title='Home')
+    #nav
+        ul(class=activeNav)
             li
                 if activeNav== 'studio'
-                    a(href='/',class='active')=('Estudio')
+                    a(href='/studio',class='active')=('Estudio de grabación')
                 else
-                    a(href='/')=('Estudio')
+                    a(href='/studio')=('Estudio de grabación')
             li
-                if activeNav=='servicios'
-                    a(href='/services',class='active')=('Servicios')
+                if activeNav=='live'
+                    a(href='/live',class='active')=('Sonído en Vivo')
                 else
-                    a(href='/services')=('Servicios')
-            li
-                if activeNav=='shows'
-                    a(href='/shows',class='active')=('Shows')
-                else
-                    a(href='/shows')=('Shows')
-            li
-                if activeNav=='videos'
-                    a(href='/videos',class='active')=('Videos')
-                else
-                    a(href='/videos')=('Videos')
-            li
-                if activeNav=='fotos'
-                    a(href='/photos',class='active')=('Fotos')
-                else
-                    a(href='/photos')=('Fotos')
-            li
-                if activeNav=='bio'
-                    a(href='/bio',class='active')=('Bio')
-                else
-                    a(href='/bio')=('Bio')
-    h2=(activeNav)
-
-    //- audio(controls loop)
-    //-     if activeNav=='home'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoZEVUMHNUTFlRQTA/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='fotos'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoaURMOW83YVFqek0/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='shows'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoTVZ3T2l1aGllaUU/edit?usp=sharing", type="audio/mpeg")
-    //-     if activeNav=='bio'
-    //-         source(src="https://docs.google.com/file/d/0B4S8RwpPjHsoTVZ3T2l1aGllaUU/edit?usp=sharing", type="audio/mpeg")
-    //-     Your browser does not support the audio element.
-
+                    a(href='/live')=('Sonído en Vivo')
+            
+            if activeNav== 'studio'
+                    ul
+                        li
+                            if activeNav== 'elestudio'
+                                a(href='/elestudio',class='active')=('El estudio')
+                            else
+                                a(href='/elestudio')=('El estudio')
+                        li
+                            if activeNav=='discos'
+                                a(href='/discos',class='active')=('Discos')
+                            else
+                                a(href='/discos')=('Discos')

@@ -20,11 +20,12 @@ html.no-js(lang='en')
     link(rel='stylesheet', href='/css/style.css')
     link(rel='stylesheet', href='/css/layout.css')
     link(rel='shortcut icon', href='http://example.com/myicon.ico')
-    link(href='http://fonts.googleapis.com/css?family=Overlock|Ubuntu:700|Bowlby+One+SC|Open+Sans', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Ubuntu:700|Open+Sans', rel='stylesheet', type='text/css')
   body
-    div(id='container')
+    #container
       include includes/header
-
-      block content
+      
+      #content
+        block content
 
       include includes/footer

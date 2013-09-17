@@ -4,7 +4,8 @@ font-family: 'Ubuntu', sans-serif;
 font-family: 'Bowlby One SC', cursive;
 */
 body {
-    background: url('../images/estudio.jpg') center center no-repeat #000;
+    background: url('../images/estudio.jpg') center top no-repeat #000;
+    font-family: 'Open Sans', sans-serif;
 }
 a, p {
     white-space:pre-line;
@@ -21,6 +22,30 @@ form {
     margin: 0px;
     padding: 0px;
 }
+h3, h4 {
+    margin: 0px 0px 10px 0px;
+    color: #fff;
+    font-family: 'Ubuntu', sans-serif;
+}
+p {
+    font-size: 12px;
+    color: #ddd;
+}
+article ul li {
+    margin: 0px;
+    font-size: 12px;
+    color: #ccc;
+    list-style: none;
+    border-bottom: 1px dotted #666 ;
+}
+li.ulSubtitle {
+    position: relative;
+    left: -10px;
+    color: #fff;
+    font-weight: bold;
+    list-style: none;
+}
+
 /* Header */
 header h1 {
     margin: 0;
@@ -30,6 +55,18 @@ header h1 {
     overflow: hidden;
     text-indent: 900px;
     background: url('../images/prosonus-logo.png') center bottom no-repeat;
+    position: relative;
+    top: 0px;
+    z-index: 10;
+}
+a#home {
+    display: block;
+    width: 350px;
+    height: 100px;
+    position: relative;
+    top: -15px;
+    z-index: 12;
+    margin: 0px;
 }
 header h2 {
     clear: both;
@@ -65,9 +102,15 @@ header h1, header h2 {
     width: 1024px;
     margin: auto;
 }
+#content {
+    float: left;
+    margin-bottom: 30px;
+}
 article {
     margin-top: 25px;
+    margin-right: 20px;
     min-height: 450px;
+    padding: 20px;
     float: left;
     background: url('../images/dark-noisy-texture.png');
     box-shadow: 0px 10px 10px rgba(0,0,0,1);
@@ -75,29 +118,15 @@ article {
 
 /* Header */
 header {
+    height: 250px;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 68px;
     color: black;
 }
-header audio {
-    position: relative;
-    left: 45px;
-}
-#homeShows {
-    width: 39%;
-    float: right;
-}
-#homeShows .show {
-    width: 100%;
-}
 #mainArticle {
-    clear: both;
     width: 59%;
     min-width: 400px;
     color: #fcfcf9;
-    padding: 10px;
-    position: relative;
-    top: -50px;
+    margin-right: 10px;
 }
 #mainArticle h4 {
     font-size: 29px;
@@ -107,13 +136,6 @@ header audio {
     color: #f3faf5;
     margin: 0px 0px 10px 0px;
     text-shadow: 0px 1px 4px rgb(0,0,0);
-}
-#mainArticle .post {
-    background: rgba(14,13,17,0.5);
-    padding: 20px 2% 20px 4%;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.9);
-    border-radius: 10px;
-    margin-bottom: 20px;
 }
 #mainArticle div {
     display: block;
@@ -203,12 +225,17 @@ header audio {
 /* Navigations */
 #nav {
     display: block;
-    width: 470px;
+    width: 360px;
+    height: 220px;
     min-height: 20px;
     margin: 25px auto 0px auto;
-    background: url('../images/dark-noisy-texture.png');
-    padding: 10px;
+    background: url('../images/fx1.png');
+    padding: 30px;
     opacity: 0.95;
+    position: relative;
+    top: -200px;
+    z-index: 0;
+    box-shadow: 0px 2px 10px #000;
 }
 #nav ul {
     width: 500px;
@@ -223,9 +250,21 @@ header audio {
     text-transform: uppercase;
     font-size: 12px;
 }
-#nav ul li a {
-    padding: 5px;
+#nav ul.home li a {
+    padding: 20px;
+    top: 180px;
 }
+#nav ul li a {
+    top: 160px;
+    position: relative;
+    padding: 10px 20px;
+    background: #000;
+}
+#nav ul ul li a {
+    top: 180px;
+    float: left;
+}
+
 #verticalNav {
     clear: both;
     width: 180px;
@@ -247,10 +286,12 @@ header audio {
     font-size: 12px;
     padding: 0px 0px 15px 0px;
 }
+
 #nav a.active,
 #verticalNav .active a {
-    background: #fff;
-    color: #222;
+    background: #000;
+    color: #fff;
+    box-shadow: 0px 4px 0px #333;
 }
 #verticalNav ul li a {
     display: block;
@@ -417,8 +458,8 @@ header audio {
 footer {
     clear: both;
     height: 40px;
-    width: 90%;
-    margin: 30px auto 10px auto;
+    width: 100%;
+    margin: 0px auto 10px auto;
     background: url('../images/dark-noisy-texture.png');
     border-radius: 4px;
     opacity: 0.95;
@@ -431,8 +472,11 @@ footer p {
     font-size: 14px;
     line-height: 40px;
     font-spacing: 12px;
-    color: #fff;
+    color: #934;
     float: left;
+}
+footer p em {
+    color: #fff;
 }
 footer iframe {
     margin: 7px 10px 0px 10px;
