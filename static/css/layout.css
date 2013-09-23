@@ -5,6 +5,7 @@ font-family: 'Bowlby One SC', cursive;
 */
 body {
     background: url('../images/estudio.jpg') center top no-repeat #000;
+    font-family: 'Open Sans', sans-serif;
 }
 a, p {
     white-space:pre-line;
@@ -21,6 +22,33 @@ form {
     margin: 0px;
     padding: 0px;
 }
+h3, h4 {
+    margin: 0px 0px 10px 0px;
+    color: #fff;
+    font-family: 'Ubuntu', sans-serif;
+}
+p {
+    font-size: 12px;
+    color: #ddd;
+}
+article ul {
+    margin: 0 0 10px 15px;
+}
+article ul li {
+    margin: 0px;
+    font-size: 12px;
+    color: #ccc;
+    list-style: none;
+    border-bottom: 1px dotted #666 ;
+}
+li.ulSubtitle {
+    position: relative;
+    left: -10px;
+    color: #fff;
+    font-weight: bold;
+    list-style: none;
+}
+
 /* Header */
 header h1 {
     margin: 0;
@@ -77,11 +105,16 @@ header h1, header h2 {
     width: 1024px;
     margin: auto;
 }
+#content {
+    float: left;
+    margin-bottom: 30px;
+}
 article {
     margin-top: 25px;
+    margin-right: 20px;
     min-height: 450px;
+    padding: 20px;
     float: left;
-    padding: 10px;
     background: url('../images/dark-noisy-texture.png');
     box-shadow: 0px 10px 10px rgba(0,0,0,1);
 }
@@ -107,7 +140,6 @@ header {
     margin: 0px 0px 10px 0px;
     text-shadow: 0px 1px 4px rgb(0,0,0);
 }
-
 #mainArticle div {
     display: block;
     font-size: 12px;
@@ -258,12 +290,41 @@ header {
     padding: 0px 0px 15px 0px;
 }
 
-#nav a.active,
-#verticalNav .active a {
-    background: #000;
-    color: #fff;
-    box-shadow: 0px 4px 0px #333;
+#horizontalNav {
+    clear: both;
+    min-width: 680px;
+    height: 50px;
+    float: left;
 }
+#horizontalNav ul {
+    margin: 25px 0px 0px 0px;
+    padding: 0px;
+}
+#horizontalNav ul li {
+    display: inline-block;
+    list-style: none;
+    float: left;
+    margin-right: 30px;
+    font-family: 'Ubuntu', sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 0px 10px 0px 10px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+#nav a.active,
+#horizontalNav li.active,
+#verticalNav li.active {
+    background: #000;
+    box-shadow: 0px 4px 0px #fff;
+}
+#nav a.active,
+#horizontalNav li.active a,
+#verticalNav li.active a {
+    color: #fff;
+}
+
+#horizontalNav ul li a,
 #verticalNav ul li a {
     display: block;
     padding: 5px;
@@ -429,8 +490,8 @@ header {
 footer {
     clear: both;
     height: 40px;
-    width: 90%;
-    margin: 30px auto 10px auto;
+    width: 100%;
+    margin: 0px auto 10px auto;
     background: url('../images/dark-noisy-texture.png');
     border-radius: 4px;
     opacity: 0.95;
