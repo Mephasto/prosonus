@@ -31,87 +31,31 @@ server.locals = {
 ///////////////////////////////////////////
 
 /////// ADD ALL YOUR ROUTES HERE  /////////
-/*
-// SHOWS - ABM
-server.get('/shows/new', function(req,res){
-  res.render('newShow.jade');
-});
-server.post('/shows/new', function(req,res){
-  var show = new models.Show(req.body);
-  show.save(function(err){
-    if(err === null){
-      res.render('newShow.jade', {message : 'Nueva fecha creada!'});
-    }
-  });
-});
-
-server.get('/shows/delete', function(req,res){
-  res.render('delShow.jade');
-});
-server.post('/shows/delete', function(req,res){
-  return models.Show.findById(req.body.id, function (err, show) {
-    if (!show){ return res.render('delShow.jade', {message : 'No existe la fecha!'}); }
-    return show.remove(function (err) {
-      if (!err) {
-        // removed!
-        return res.render('delShow.jade', {message : 'Fecha borrada!'});
-        console.log("removed");
-      } else {
-        res.render('delShow.jade', {message : 'Error! - {id: ' + id + '}'});
-        // NOT removed!
-        console.log(err);
-      }
-    });
-  });
-});
-
-server.get('/shows/list', function(req,res){
-  models.Show.find({}, function (err, shows) {
-    res.send(shows);
-  });
-});
-
-// SHOWS
-server.get('/shows', function(req,res){
-  var query = models.Show.find();
-  query.sort('date').execFind(function (err, shows) {
-    if(err === null){
-      res.render('shows.jade', {
-                  shows : shows,
-                  activeNav : 'shows'
-                }
-      );
-    }
-  });
-});
-*/
 // HOME
 server.get('/', function(req,res){
   res.render('index.jade', {
               activeNav : 'home'
             }
   );
-  /*
-  models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
-    if(err === null){
-    }
-  });
-  */
 });
 
 // STUDIO
-server.get('/studio', function(req,res){
+server.get('/studio/thestudio', function(req,res){
   res.render('studio.jade', {
-              activeNav : 'studio'
+              activeNav : 'studio',
+              activeSubNav : 'studio'
             }
   );
-  /*
-  models.Show.find({$query: {}, $orderby: { date : 1 } }, function (err, shows) {
-    if(err === null){
-    }
-  });
-  */
 });
+// STUDIO/
+server.get('/studio/record', function(req,res){
+  res.render('record.jade', {
+              activeNav : 'studio',
+              activeSubNav : 'record'
+            }
+  );
+});
+
 
 
 //A Route for Creating a 500 Error (Useful to keep around)

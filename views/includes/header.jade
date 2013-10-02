@@ -1,28 +1,58 @@
-header
+if activeSubNav== 'none'
+    - var headerclass = ''
+else
+    - var headerclass = 'mini'
+
+header(class=headerclass)
     h1=('proSonus')
         a#home(href='/', title='Home')
     #nav
         ul(class=activeNav)
             li
                 if activeNav== 'studio'
-                    a(href='/studio',class='active')=('Estudio de grabación')
+                    a(href='/studio/thestudio',class='active')=('Estudio de grabación')
                 else
-                    a(href='/studio')=('Estudio de grabación')
+                    a(href='/studio/thestudio')=('Estudio de grabación')
             li
                 if activeNav=='live'
                     a(href='/live',class='active')=('Sonído en Vivo')
                 else
                     a(href='/live')=('Sonído en Vivo')
-            
-            if activeNav== 'studio'
-                    ul
-                        li
-                            if activeNav== 'elestudio'
-                                a(href='/elestudio',class='active')=('El estudio')
-                            else
-                                a(href='/elestudio')=('El estudio')
-                        li
-                            if activeNav=='discos'
-                                a(href='/discos',class='active')=('Discos')
-                            else
-                                a(href='/discos')=('Discos')
+                
+if activeNav== 'studio'
+    div(id='horizontalNav')
+        ul
+            if activeSubNav== 'studio'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/studio/thestudio')=('El Estudio')
+
+            if activeSubNav== 'record'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/studio/record')=('Grabación')
+                    
+            if activeSubNav== 'mix'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/studio/mix')=('Mezcla')
+
+            if activeSubNav== 'master'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/studio/master')=('Master')
+
+            if activeSubNav== 'production'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/studio/production')=('Producción Musical')

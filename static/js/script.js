@@ -35,20 +35,19 @@ $(document).ready(function() {
     $('#nav ul li a').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend', changeColor);
     animate();
 
-    $('#nav').css('background-position', '100px');
-    $('#datepicker').datepicker();
-    $('#timepicker').timepicker();
+    // $('#datepicker').datepicker();
+    // $('#timepicker').timepicker();
 
-    mailListInput = $('#mailListInput').attr('value');
-    $('#mailListInput').focusin(function(){
-        if($(this).attr('value') == mailListInput){
-            $(this).attr('value','');
-        }
-    });
-    $('#mailListInput').focusout(function(){
-        if($(this).attr('value') == ''){
-            $(this).attr('value',mailListInput);
-        }
-    });
+    // mailListInput = $('#mailListInput').attr('value');
+    // $('#mailListInput').focusin(function(){
+    //     if($(this).attr('value') == mailListInput){
+    //         $(this).attr('value','');
+    //     }
+    // });
+    // $('#mailListInput').focusout(function(){
+    //     if($(this).attr('value') == ''){
+    //         $(this).attr('value',mailListInput);
+    //     }
+    // });
 
 });
