@@ -33,7 +33,8 @@ server.locals = {
 // HOME
 server.get('/', function(req,res){
   res.render('index.jade', {
-              activeNav : 'home'
+              activeNav : 'home',
+              activeSubNav : 'none'
             }
   );
 });
