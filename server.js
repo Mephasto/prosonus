@@ -41,7 +41,7 @@ server.get('/', function(req,res){
 });
 
 // STUDIO
-server.get('/studio/thestudio', function(req,res){
+server.get('/studio/', function(req,res){
   res.render('studio.jade', {
               activeNav : 'studio',
               activeSubNav : 'studio'
@@ -49,10 +49,10 @@ server.get('/studio/thestudio', function(req,res){
   );
 });
 // STUDIO/
-server.get('/studio/record', function(req,res){
-  res.render('record.jade', {
-              activeNav : 'studio',
-              activeSubNav : 'record'
+server.get('/live/', function(req,res){
+  res.render('live.jade', {
+              activeNav : 'live',
+              activeSubNav : 'live'
             }
   );
 });

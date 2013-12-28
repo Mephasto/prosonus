@@ -10,14 +10,14 @@ header(class=headerclass)
         ul(class=activeNav)
             li
                 if activeNav== 'studio'
-                    a(href='/studio/thestudio',class='active')=('Estudio de grabación')
+                    a(href='/studio/',class='active')=('Estudio de grabación')
                 else
-                    a(href='/studio/thestudio')=('Estudio de grabación')
+                    a(href='/studio/')=('Estudio de grabación')
             li
                 if activeNav=='live'
-                    a(href='/live',class='active')=('Sonído en Vivo')
+                    a(href='/live/',class='active')=('Sonído en Vivo')
                 else
-                    a(href='/live')=('Sonído en Vivo')
+                    a(href='/live/')=('Sonído en Vivo')
                 
 if activeNav== 'studio'
     div(id='horizontalNav')
@@ -27,7 +27,7 @@ if activeNav== 'studio'
             else
                 - var liclass = ''
             li(class=liclass)
-                a(href='/studio/thestudio')=('El Estudio')
+                a(href='/studio/')=('El Estudio')
 
             if activeSubNav== 'record'
                 - var liclass = 'active'
@@ -56,3 +56,22 @@ if activeNav== 'studio'
                 - var liclass = ''
             li(class=liclass)
                 a(href='/studio/production')=('Producción Musical')
+
+
+if activeNav== 'live'
+    div(id='horizontalNav')
+        ul
+            if activeSubNav== 'live'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/live/')=('Equipos')
+
+
+            if activeSubNav== 'live'
+                - var liclass = 'active'
+            else
+                - var liclass = ''
+            li(class=liclass)
+                a(href='/live/')=('Presupuestos')

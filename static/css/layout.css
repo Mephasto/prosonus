@@ -144,7 +144,7 @@ header {
     color: black;
 }
 header.mini {
-    height: 190px;
+    height: 210px;
 }
 #mainArticle {
     width: 59%;
@@ -315,14 +315,12 @@ header.mini #nav {
 }
 
 #horizontalNav {
-    clear: both;
-    min-width: 680px;
-    height: 50px;
-    float: left;
+    display: block;
+    margin: 25px 0px 0px 0px;
 }
 #horizontalNav ul {
-    margin: 25px 0px 0px 0px;
-    padding: 0px;
+    padding: 0;
+    margin: 0;
 }
 #horizontalNav ul li {
     display: inline-block;
