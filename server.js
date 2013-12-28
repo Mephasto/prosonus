@@ -48,7 +48,7 @@ server.get('/studio/', function(req,res){
             }
   );
 });
-// STUDIO/
+// VIVO/
 server.get('/live/', function(req,res){
   res.render('live.jade', {
               activeNav : 'live',
@@ -56,7 +56,13 @@ server.get('/live/', function(req,res){
             }
   );
 });
-
+server.get('/live/presupuesto', function(req,res){
+  res.render('presupuesto.jade', {
+              activeNav : 'live',
+              activeSubNav : 'presupuesto'
+            }
+  );
+});
 
 
 //A Route for Creating a 500 Error (Useful to keep around)
