@@ -7,6 +7,7 @@ $(document).ready(function() {
     var mailListInput, animate, changeColor, colorWhite, elem, hiperlinks, fps = 60;
 
     elem = $('#nav');
+
     animate = function () {
         elem.css('background-position', Math.floor(Math.random()*1920) + 'px ' + Math.floor(Math.random()*1284) + 'px' );
         setTimeout(function() {
@@ -14,11 +15,6 @@ $(document).ready(function() {
         }, 1000 / fps);
     };
 
-    
-    changeColor = function (el) {
-        //hiperlinks.css('background-color', '#'+Math.floor(Math.random()*16777215).toString(16));
-        el.css('color', '#'+ Math.floor(777215 + Math.random()*16000000).toString(16));
-    };
     colorWhite = function (el) {
         if (el.hasClass('active')){
             el.css('color', '#fff');
@@ -27,12 +23,7 @@ $(document).ready(function() {
         }
     };
 
-    $('#nav ul li a').hover(function(){
-        changeColor($(this));
-    }, function(){
-        colorWhite($(this));
-    });
-    $('#nav ul li a').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend', changeColor);
+
     animate();
 
     // $('#datepicker').datepicker();

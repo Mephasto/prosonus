@@ -23,7 +23,8 @@ server.locals = {
                   ,analyticssiteid: 'XXXXXXX'
                   ,blog: false
                   ,gallery: false
-                  ,message: null
+                  ,form: false
+                  ,email: false
                 }
 
 ///////////////////////////////////////////

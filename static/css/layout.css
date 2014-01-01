@@ -53,7 +53,7 @@ li.ulSubtitle {
 }
 .superText p {
     font-size: 23px;
-    margin: 80px 0;
+    margin: 40px 0;
     padding: 0px 40px;
     text-align: center;
     font-family: 'Open Sans', sans-serif;
@@ -280,6 +280,12 @@ header.mini #nav {
 #nav ul.home li a {
     padding: 20px;
     top: 180px;
+    color: #fff;
+    font-weight: bold;
+}
+#nav ul.home li a:hover {
+    color: #f33;
+    text-decoration: none;
 }
 #nav ul li a {
     top: 160px;
@@ -507,6 +513,11 @@ header.mini #nav {
     color: #fcfcf9;
 }
 
+.glyph {
+    font-family: Arial, sans-serif;
+    text-shadow: 0px 1px 6px #fff;
+    margin: 20px;
+}
 
 /* Footer */
 footer {
