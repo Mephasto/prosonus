@@ -1,0 +1,635 @@
+
+//font-family: 'Overlock', cursive
+//font-family: 'Ubuntu', sans-serif
+//font-family: 'Bowlby One SC', cursive
+
+@mixin transition($transition-property, $transition-time, $method)
+  -webkit-transition: $transition-property $transition-time $method
+  -moz-transition: $transition-property $transition-time $method
+  -ms-transition: $transition-property $transition-time $method
+  -o-transition: $transition-property $transition-time $method
+  transition: $transition-property $transition-time $method
+
+body 
+  background: url('../images/binding_dark.png') center center black
+  font-family: 'Open Sans', sans-serif
+
+a, p 
+  white-space: pre-line
+
+
+a 
+  color: #555
+  text-decoration: none
+  -webkit-transition: color 0.3s
+  &:hover 
+    color: #fefefa
+
+#contacto-footer
+  form 
+    margin: 0px
+    padding: 0px
+    input
+      display: block
+      margin-bottom: 10px
+      padding: 5px 10px
+    #txt
+      display: inline-block
+      float: left
+      margin-bottom: 0
+
+h3, h4 
+  margin: 0px 0px 10px 0px
+  color: #fff
+  font-family: 'Ubuntu', sans-serif
+
+p 
+  font-size: 12px
+  color: #ddd
+
+
+article ul 
+  margin: 0 0 10px 5px
+  -webkit-padding-start: 5px
+  li 
+    margin: 0px
+    font-size: 12px
+    color: #ccc
+    list-style: none
+    border-bottom: 1px dotted #666
+  
+
+
+li.ulSubtitle 
+  margin-top: 10px
+  position: relative
+  left: -10px
+  color: #fff
+  font-weight: bold
+  list-style: none
+  border-bottom: none
+
+
+.superText p 
+  font-size: 23px
+  margin: 40px 0
+  padding: 0px 40px
+  text-align: center
+  font-family: 'Open Sans', sans-serif
+  &.first 
+    margin-top: 60px
+  
+  &.last 
+    margin-bottom: 70px
+  
+
+
+/* Header */
+
+header h1 
+  margin: 0
+  margin: 10px auto 0px auto
+  width: 350px
+  height: 115px
+  overflow: hidden
+  text-indent: 900px
+  background: url('../images/prosonus-logo.png') center bottom no-repeat
+  position: relative
+  top: 0px
+  z-index: 10
+
+
+a#home 
+  display: block
+  width: 350px
+  height: 100px
+  position: relative
+  top: -15px
+  z-index: 12
+  margin: 0px
+
+
+header 
+  h2 
+    clear: both
+    width: 300px
+    float: left
+    position: relative
+    top: 25px
+    margin: 0px auto 0px auto
+    padding: 5px 30px
+    font-size: 20px
+    color: #000
+    text-align: center
+    font-weight: bold
+    text-transform: uppercase
+    text-indent: 40px
+    letter-spacing: 40px
+    opacity: 1
+    z-index: 99
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.95)
+    background: #fefefe
+  
+  h1, h2 
+    transition: background-color 1s, color 1s
+    transition-timing-function: linear
+    -moz-transition: background-color 1s, color 1s
+    /* Firefox 4 */
+    -moz-transition-timing-function: linear
+    -webkit-transition: background-color 1s, color 1s
+    /* Safari and Chrome */
+    -webkit-transition-timing-function: linear
+    -o-transition: background-color 1s, color 1s
+    /* Opera */
+    -o-transition-timing-function: linear
+  
+
+
+#container 
+  width: 1024px
+  margin: auto
+
+
+#content 
+  float: left
+  margin-bottom: 30px
+
+
+article 
+  margin-top: 25px
+  margin-right: 20px
+  min-height: 450px
+  padding: 20px
+  float: left
+  background: url('../images/dark-noisy-texture.png')
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 1)
+  border: 1px #000 solid
+  border-radius: 4px
+
+
+/* Header */
+
+header 
+  height: 250px
+  font-family: 'Ubuntu', sans-serif
+  color: black
+  &.mini 
+    height: 190px
+  
+
+
+#mainArticle 
+  width: 59%
+  min-width: 400px
+  color: #fcfcf9
+  margin-right: 10px
+  h4 
+    font-size: 29px
+    text-transform: uppercase
+    font-family: 'Overlock', cursive
+    font-weight: normal
+    color: #f3faf5
+    margin: 0px 0px 10px 0px
+    text-shadow: 0px 1px 4px rgb(0, 0, 0)
+  
+  div 
+    display: block
+    font-size: 12px
+  
+  img 
+    float: left
+    margin: 0px 10px 10px 0px
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.9)
+
+#carrousel 
+  min-height: 90px
+  margin-bottom: 30px
+  overflow: hidden
+  div
+    opacity: 0.7
+    display: inline-block
+    height: 90px
+    width: 220px
+    padding: 0
+    margin: 0
+    background: url('../images/brands-logos.png') no-repeat center center
+    @include transition(opacity, 0.2s, ease-in-out)
+    &:hover
+      opacity: 1
+  .krakatoa-control
+    display: none
+  .krakatoa-container
+    background: none
+  #presonus
+    background-position-y: 0px
+  #dmusic
+    background-position-y: -90px
+  #shure
+    background-position-y: -180px
+  #rode
+    background-position-y: -270px
+  #ua
+    background-position-y: -360px
+  #ua
+    background-position-y: -360px
+  #akg
+    background-position-y: -450px
+  #rcf
+    background-position-y: -540px
+  #yamaha
+    background-position-y: -630px
+  #neutrik
+    background-position-y: -720px
+
+#contacto-footer
+  width: 700px
+  min-height: 95px
+  margin-right: 0
+
+#album 
+  width: 360px
+  margin-right: 20px
+  float: left
+  color: #fcfcf9
+  .info 
+    margin-top: 20px
+    font-size: 12px
+    font-family: 'Open Sans', sans-serif
+    em 
+      position: relative
+      top: -10px
+      right: 3px
+      float: right
+    
+    p span 
+      display: block
+      margin-left: 10px
+    
+
+#bc-player 
+  float: left
+
+
+#mailListBox 
+  float: right
+  width: 300px
+  margin-right: 60px
+  background: rgba(0, 0, 0, 0.4)
+  padding: 10px 10px 30px 20px
+  border-radius: 10px
+  label 
+    display: block
+    float: left
+    color: #eee
+    margin: 0px 0px 10px 0px
+    padding: 10px 0px 0px 0px
+    font-family: sans-serif
+    text-transform: uppercase
+    font-size: 0.18em
+    letter-spacing: 0.2em
+    opacity: 0.6
+  
+  input 
+    &[type='text'] 
+      float: left
+      height: 30px
+      width: 150px
+      line-height: 30px
+      margin: 0px
+      padding: 0px 10px
+      color: #3c3c3c
+      border: none
+      opacity: 0.4
+      &:focus 
+        opacity: 1
+      
+    
+    &[type='submit'] 
+      float: left
+      background: #6c6c6c
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 1)
+      color: #ececec
+      border: none
+      margin: 0px 0px 0px 10px
+      height: 30px
+      line-height: 30px
+      padding: 0px 15px
+      opacity: 0.4
+      border-radius: 4px
+      &:hover 
+        opacity: 1
+      
+    
+  
+
+
+/* Navigations */
+
+#nav 
+  display: block
+  width: 360px
+  height: 210px
+  min-height: 20px
+  margin: 25px auto 0px auto
+  background: url('../images/fx1.png')
+  padding: 30px
+  opacity: 0.95
+  position: relative
+  top: -200px
+  z-index: 0
+  box-shadow: 0px 2px 10px #000
+
+
+header.mini #nav 
+  height: 180px
+
+
+#nav ul 
+  width: 500px
+  padding: 0
+  margin: 0
+  li 
+    list-style: none
+    float: left
+    margin-right: 30px
+    font-family: 'Ubuntu', sans-serif
+    text-transform: uppercase
+    font-size: 12px
+  
+  &.home li a 
+    padding: 20px
+    top: 180px
+    color: #fff
+    font-weight: bold
+    &:hover 
+      color: #f33
+      text-decoration: none
+    
+  
+  li a 
+    top: 160px
+    position: relative
+    padding: 10px 20px
+    background: #000
+  
+  ul li a 
+    top: 180px
+    float: left
+  
+
+
+#verticalNav 
+  clear: both
+  width: 180px
+  min-height: 450px
+  float: left
+  ul 
+    margin: 25px 0px 0px 0px
+    padding: 0
+    li 
+      display: block
+      clear: both
+      list-style: none
+      float: left
+      margin-right: 30px
+      font-family: 'Ubuntu', sans-serif
+      text-transform: uppercase
+      font-size: 12px
+      padding: 0px 0px 15px 0px
+    
+  
+
+
+#horizontalNav 
+  display: block
+  margin: 25px 0px 0px 0px
+  ul 
+    padding: 0
+    margin: 0
+    li 
+      display: inline-block
+      list-style: none
+      float: left
+      margin-right: 30px
+      font-family: 'Ubuntu', sans-serif
+      text-transform: uppercase
+      font-size: 12px
+      padding: 0px 10px 0px 10px
+      background: rgba(0, 0, 0, 0.8)
+    
+  
+
+
+#nav a.active, #horizontalNav li.active, #verticalNav li.active 
+  background: #000
+  box-shadow: 0px 4px 0px #fff
+
+
+#nav a.active, #horizontalNav li.active a, #verticalNav li.active a 
+  color: #fff
+
+
+#horizontalNav ul li a, #verticalNav ul li a 
+  display: block
+  padding: 5px
+
+
+/* Shows */
+
+.show 
+  width: 530px
+  padding: 20px
+  margin-bottom: 20px
+  border-bottom: 3px solid rgba(0, 0, 0, 0.2)
+  background: url('../images/dark-noisy-texture_z.png') black
+  box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.7)
+  transition: opacity 1s
+  -moz-transition: opacity 1s
+  -webkit-transition: opacity 1s
+  -o-transition: opacity 1s
+  h5, h4 
+    font-family: 'Ubuntu'
+    text-transform: uppercase
+    font-size: 22px
+    color: #fafafa
+    margin: 0px 0px 10px 0px
+  
+  h5 
+    float: right
+    right: 14px
+    color: #fb2908
+    font-size: 28px
+    margin: 0px
+  
+  h3 
+    float: right
+    clear: both
+    color: #fb2908
+    font-size: 28px
+  
+  .place 
+    position: relative
+    top: -10px
+    color: #69ab38
+    font-size: 15px
+    font-weight: bold
+  
+  p 
+    display: block
+    font-family: sans-serif
+    font-size: 0.8em
+    color: #fafafe
+    margin: 0px
+    padding: 0px
+  
+  .body 
+    width: 100%
+    margin-bottom: 20px
+  
+  img 
+    display: block
+    margin: auto
+  
+  &.old 
+    opacity: 0.5
+    &:hover 
+      opacity: 1
+    
+  
+
+
+.modal 
+  background: #090909 !important
+  padding-bottom: 10px
+  .modal-title 
+    color: #ccc
+  
+  a.close 
+    color: #ccc !important
+    opacity: 1
+    text-shadow: 0px 0px 0px
+    font-size: 12px
+    &:hover 
+      color: #ccc !important
+      opacity: 1
+      text-shadow: 0px 0px 0px
+      font-size: 12px
+    
+  
+  .modal-header 
+    border-bottom: 1px solid #333333
+  
+  .modal-footer 
+    display: none
+    background: #090909 !important
+    border-top: 1px solid #333333
+    -webkit-box-shadow: inset 0 0 0 #ffffff
+    -moz-box-shadow: inset 0 0 0 #ffffff
+    box-shadow: inset 0 0 0 #ffffff
+  
+
+
+/* Videos */
+
+.videos 
+  clear: both
+  iframe 
+    float: left
+    clear: both
+    margin: 20px 20px 20px 0px
+  
+  h3 
+    float: left
+    display: block
+    clear: both
+    margin: 10px 0px 0px 0px
+    padding: 0px 10px
+    background: black
+    background: #333
+    color: #fff
+  
+
+
+/* Fotos */
+
+#gallery 
+  background: black
+  width: 912px
+  padding-left: 10px
+  padding-top: 10px
+  img 
+    margin: 0px 10px 10px 0px
+  
+
+
+.bio 
+  padding-top: 20px
+  clear: both
+  .personaje 
+    width: 180px
+    padding: 20px
+    margin: 0px 20px 20px 0px
+    border-bottom: 3px solid rgba(0, 0, 0, 0.2)
+    background: url('../images/dark-noisy-texture_z.png') black
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.7)
+    img 
+      width: 180px
+      height: 180px
+      border: 1px solid #457821
+      margin-bottom: 5px
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.7)
+    
+    p 
+      color: #fff
+      opacity: 0.5
+    
+    .instrumento 
+      text-transform: uppercase
+      font-size: 12px
+      opacity: 0.8
+      letter-spacing: 2px
+    
+  
+  .info 
+    display: block
+    margin-top: 20px
+    font-size: 13px
+    font-family: 'Open Sans', sans-serif
+    color: #fcfcf9
+  
+
+
+.glyph 
+  font-family: Arial, sans-serif
+  text-shadow: 0px 1px 6px #fff
+  margin: 20px
+
+
+/* Footer */
+
+footer 
+  clear: both
+  height: 40px
+  width: 100%
+  margin: 0px auto 10px auto
+  background: url('../images/dark-noisy-texture.png')
+  border-radius: 4px
+  opacity: 0.95
+  &:hover 
+    opacity: 1
+  
+  p 
+    margin-left: 20px
+    font-size: 14px
+    line-height: 40px
+    font-spacing: 12px
+    color: #934
+    float: left
+    em 
+      color: #fff
+    
+  
+  iframe 
+    margin: 7px 10px 0px 10px
+    float: right
+  

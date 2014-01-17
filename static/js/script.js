@@ -23,8 +23,16 @@ $(document).ready(function() {
         }
     };
 
-
     animate();
+
+    $('.brands').krakatoa({
+        buttons: false, 
+        number: 9, 
+        width: '220px', 
+        height: '90px', 
+        arrows: false,
+        loop: true
+    });
 
     // $('#datepicker').datepicker();
     // $('#timepicker').timepicker();

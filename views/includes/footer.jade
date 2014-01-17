@@ -1,13 +1,32 @@
-p(class="glyph", style="font-size:45px; text-align:center; clear:both;") ᷈ ۝ ᷉
+article(id='carrousel', class='brands')
+  #presonus(title="Presonus")
+  #dmusic(title="Dangerous Music")
+  #shure(title="Shure")
+  #rode(title="RØDE")
+  #ua(title="Universal Audio")
+  #akg(title="Akg")
+  #rcf(title="RCF amplifiers")
+  #yamaha(title="Yamaha")
+  #neutrik(title="Neutrik")
+
+article(id='contacto-footer')
+  form
+    div(class='column')
+      input(id='email', name='email', placeholder='E-mail')
+      input(id='name', name='name', placeholder='Nombre')
+    div(class='column')
+      textarea(id='txt', name='txt', placeholder='Consulta')
+      submit
 
 footer
   p
-    !='҈ - Nicolas: <em>nicolas@prosonus.com.ar</em> -  ҉ - Damian: <em>damian@prosonus.com.ar</em>'
+    !='Nicolas: <em>nicolas@prosonus.com.ar</em> - Damian: <em>damian@prosonus.com.ar</em>'
   iframe(src='http://www.facebook.com/plugins/like.php?href=http://www.prosonus.com.ar', scrolling='no', frameborder='0', style='border: none; width: 338px; height: 60px;')
 
   script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
   script(type='text/javascript',src='/js/libs/jquery.js')
   script(type='text/javascript',src='/js/libs/jquery.ui.timepicker.js')
+  script(type='text/javascript',src='/js/libs/jquery.krakatoa.min.js')
   script(type='text/javascript',src='/js/libs/jqueryui/js/jquery-ui-1.9.2.custom.min.js')
   script(type='text/javascript',src='/js/libs/bootstrap/js/bootstrap.min.js')
   script(type='text/javascript',src='/js/script.js')
@@ -20,7 +39,7 @@ footer
   if (email)
     script(type='text/javascript',src='/js/libs/mandrill/mandrill.min.js')
   if (blog)
-    script(type='text/javascript',src='/js/blog.js') 
+    script(type='text/javascript',src='/js/blog.js')
   script 
     window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\\/script>')
   //-script(defer, src='js/plugins.js')

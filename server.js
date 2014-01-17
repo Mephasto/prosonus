@@ -60,7 +60,9 @@ server.get('/live/', function(req,res){
 server.get('/live/presupuesto', function(req,res){
   res.render('presupuesto.jade', {
               activeNav : 'live',
-              activeSubNav : 'presupuesto'
+              activeSubNav : 'presupuesto',
+              form: true,
+              email: true
             }
   );
 });
