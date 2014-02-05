@@ -31,12 +31,29 @@ a
     padding: 0px
     input
       display: block
-      margin-bottom: 10px
       padding: 5px 10px
+      border: 0px solid
+      margin-bottom: 20px
+      &.last
+        margin-bottom: 0
+      &[type='submit']
+        width: 80px
+        height: 80px
+        background: #332
+        color: #fff
     #txt
       display: inline-block
       float: left
       margin-bottom: 0
+    .column
+      width: 250px
+      float: left
+    .small-column
+      width: 100px
+      float: left
+    textarea
+      border-radius: 0
+      height: 70px 
 
 h3, h4 
   margin: 0px 0px 10px 0px
@@ -71,16 +88,24 @@ li.ulSubtitle
 
 
 .superText p 
-  font-size: 23px
-  margin: 40px 0
+  font-size: 22px
+  margin: 40px 75px
   padding: 0px 40px
   text-align: center
   font-family: 'Open Sans', sans-serif
+  text-shadow: 0px 1px 1px rgba(255,255,255,0.6)
+  em
+    font-style: normal
+    font-size: 24px
+    @include transition(color, 0.2s, ease-in-out)
   &.first 
-    margin-top: 60px
-  
+    margin-top: 60px  
   &.last 
     margin-bottom: 70px
+  &:hover em
+    color: #ff3333
+    text-shadow: 0px 1px 1px rgba(255,55,55,0.6)
+
   
 
 

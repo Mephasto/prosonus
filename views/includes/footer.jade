@@ -10,13 +10,15 @@ article(id='carrousel', class='brands')
   #neutrik(title="Neutrik")
 
 article(id='contacto-footer')
+  p Dejanos tu email para recibir promociones especiales o si tenes alguna consulta:
   form
     div(class='column')
       input(id='email', name='email', placeholder='E-mail')
-      input(id='name', name='name', placeholder='Nombre')
-    div(class='column')
-      textarea(id='txt', name='txt', placeholder='Consulta')
-      submit
+      input(id='name', name='name', placeholder='Nombre', class="last")
+    div(class='column', style='width:295px')
+      textarea(id='txt', name='txt', placeholder='Consulta', style='width:260px')
+    div(class='small-column')
+      input(type='submit', value='Enviar', class="last")
 
 footer
   p
