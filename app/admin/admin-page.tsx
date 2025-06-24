@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -104,10 +105,8 @@ export default function AdminPage(initialProducts: Product[]) {
   };
 
   const handleAddProduct = async () => {
-    const newId = Math.max(...products.map((p) => p.id)) + 1;
     setIsAddingProduct(false);
     const result: Product = await dbNewProduct(newProduct);
-    console.log("dbNewProduct ID:", result.id);
     setProducts((prev) => [...prev, { ...newProduct, id: result.id }]);
     setNewProduct({
       name: "",
@@ -141,35 +140,7 @@ export default function AdminPage(initialProducts: Product[]) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="border-b">
-        <div className="container flex h-16 items-center px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Headphones className="h-6 w-6" />
-            <span>AudioRent Pro</span>
-          </Link>
-          <nav className="ml-auto flex gap-4 sm:gap-6">
-            <Link
-              href="/catalog"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Catalog
-            </Link>
-            <Link
-              href="/quote"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Create Quote
-            </Link>
-            <Link
-              href="/admin"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Admin
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div>
       <main className="flex-1">
         <div className="container px-4 py-6 md:px-6 md:py-8">
           <div className="mb-6">

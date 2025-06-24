@@ -1,44 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Headphones, ShieldCheck, Users } from "lucide-react";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="border-b">
-        <div className="container flex h-16 items-center px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Image
-              src="/logo_white.png"
-              alt={"ProSonus"}
-              height={40}
-              width={150}
-              className=""
-            />
-          </Link>
-          <nav className="ml-auto flex gap-4 sm:gap-6">
-            <Link
-              href="/catalog"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Catalog
-            </Link>
-            <Link
-              href="/quote"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Create Quote
-            </Link>
-            <Link
-              href="/admin"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
-              Admin
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">
@@ -69,7 +35,7 @@ export default function Home() {
                 <img
                   src="/placeholder.svg?height=400&width=400"
                   alt="Audio Equipment"
-                  className="rounded-lg object-cover"
+                  className="rounded-lg object-cover invert"
                   width={400}
                   height={400}
                 />

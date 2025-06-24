@@ -23,6 +23,12 @@ enum Category {
   ACCESOSORIES
 }
 
+model Categories {
+  id   String   @id @default(uuid())
+  name String
+  enum Category
+}
+
 model Product {
   id          String   @id @default(uuid())
   name        String
@@ -32,6 +38,8 @@ model Product {
   specs       String
   description String
   category    Category
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 enum Status {
@@ -42,20 +50,25 @@ enum Status {
 
 model Quote {
   id         Int      @id @default(autoincrement())
-  dateRange  DateTime
-  items      String[]
+  startDate  DateTime
+  endDate    DateTime
+  products   String[]
   totalDays  Int
   status     Status
   customer   Customer @relation(fields: [customerId], references: [id])
   customerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }
 
 model Customer {
-  id      String  @id @default(uuid())
-  name    String
-  company String?
-  email   String
-  phone   String
-  notes   String?
-  Quote   Quote[]
+  id        String   @id @default(uuid())
+  name      String
+  company   String?
+  email     String
+  phone     String
+  notes     String?
+  Quote     Quote[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }

@@ -8,6 +8,11 @@ export const dbGetProducts = async () => {
   return products;
 };
 
+export const dbGetProductsByCategory = async (id: string) => {
+  const products = await db.product.findMany({ where: { category: id } });
+  return products;
+};
+
 export const dbNewProduct = async (data: Product) => {
   // console.log(data);
   if (typeof data.price === "string") {
@@ -40,4 +45,9 @@ export const dbDeleteProduct = async (id: string) => {
     where: { id },
   });
   return product;
+};
+
+export const dbGetCategories = async () => {
+  const categories = await db.categories.findMany();
+  return categories;
 };

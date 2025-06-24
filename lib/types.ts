@@ -19,3 +19,9 @@ export type Category =
   | "HEADPHONES"
   | "CABLES"
   | "ACCESOSORIES";
+
+export type Categories = {
+  name: string;
+  enum: string;
+  current?: boolean;
+}[];
