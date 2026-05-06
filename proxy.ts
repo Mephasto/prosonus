@@ -16,19 +16,19 @@ async function computeExpectedToken(): Promise<string> {
     encoder.encode(HMAC_SALT),
     { name: "HMAC", hash: "SHA-256" },
     false,
-    ["sign"]
+    ["sign"],
   );
   const sig = await crypto.subtle.sign(
     "HMAC",
     key,
-    encoder.encode(`${user}:${pass}`)
+    encoder.encode(`${user}:${pass}`),
   );
   return Array.from(new Uint8Array(sig))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Dejar pasar la página de login sin autenticación
