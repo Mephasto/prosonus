@@ -1,13 +1,26 @@
 "use server";
-import { dbGetCategories, dbGetProducts } from "@/lib/actions";
+import {
+  dbGetCategories,
+  dbGetProducts,
+  dbGetStoreConfig,
+} from "@/lib/actions";
 import QuotePage from "./quote-page";
 import { Product } from "@/lib/types";
 
 const Quote = async () => {
-  const categories = await dbGetCategories();
-  const products: Product[] = await dbGetProducts();
+  const [categories, products, storeConfig] = await Promise.all([
+    dbGetCategories(),
+    dbGetProducts(),
+    dbGetStoreConfig(),
+  ]);
 
-  return <QuotePage products={products} categories={categories} />;
+  return (
+    <QuotePage
+      products={products as Product[]}
+      categories={categories}
+      exchangeRate={storeConfig?.exchangeRate ?? 1}
+    />
+  );
 };
 
 export default Quote;

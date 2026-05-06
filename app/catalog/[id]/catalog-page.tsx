@@ -1,5 +1,6 @@
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,20 +10,38 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Filter, ShoppingCart } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
 import { Product, Categories } from "@/lib/types";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { useProductFilters } from "@/hooks/use-product-filters";
+import ProductFilterBar from "@/components/product-filter-bar";
+import { formatARS, formatUSD } from "@/lib/prices";
 
 export default function CatalogPage({
   products,
   categories,
   catselected,
+  exchangeRate = 1,
 }: {
   products: Product[];
   categories: Categories;
   catselected: string;
+  exchangeRate?: number;
 }) {
+  const {
+    searchQuery,
+    setSearchQuery,
+    filterBrand,
+    setFilterBrand,
+    filterCategory,
+    setFilterCategory,
+    filteredProducts,
+    brands,
+    isFiltered,
+    clearFilters,
+  } = useProductFilters(products);
+
   return (
     <div>
       <main className="flex-1">
@@ -36,51 +55,72 @@ export default function CatalogPage({
                 Browse our selection of professional audio equipment for rent
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-              <div className="relative w-full md:w-64">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="pl-8 w-full"
-                />
-              </div>
-              <Button variant="outline" size="icon">
-                <Filter className="h-4 w-4" />
-                <span className="sr-only">Filter</span>
-              </Button>
+            <div className="w-full md:w-auto">
+              <ProductFilterBar
+                brands={brands}
+                searchQuery={searchQuery}
+                filterBrand={filterBrand}
+                filterCategory={filterCategory}
+                onSearchChange={setSearchQuery}
+                onBrandChange={setFilterBrand}
+                onCategoryChange={setFilterCategory}
+                onClear={clearFilters}
+                isFiltered={isFiltered}
+                resultCount={filteredProducts.length}
+                totalCount={products.length}
+                showCategoryFilter={catselected === "all"}
+              />
             </div>
           </div>
           <Nav categories={categories} catselected={catselected} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <Card key={product.id} className="flex flex-col">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{product.name}</CardTitle>
-                      <CardDescription>{product.brand}</CardDescription>
+                <Link href={`/catalog/product/${product.id}`}>
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle>{product.name}</CardTitle>
+                        <CardDescription>{product.brand}</CardDescription>
+                      </div>
+                      <Badge>{product.category}</Badge>
                     </div>
-                    <Badge>{product.category}</Badge>
-                  </div>
-                </CardHeader>
+                  </CardHeader>
+                </Link>
                 <CardContent className="flex-1">
                   <div className="aspect-square relative mb-4">
                     <img
-                      src={`/placeholder.svg?height=300&width=300&text=${encodeURIComponent(product.name)}`}
+                      src={
+                        product.imageUrl
+                          ? `/api/images/${product.imageUrl}`
+                          : `/placeholder.svg?height=300&width=300&text=${encodeURIComponent(product.name)}`
+                      }
                       alt={product.name}
-                      className="rounded-md object-cover w-full h-full invert"
+                      className={`rounded-md object-cover w-full h-full ${!product.imageUrl ? "invert" : ""}`}
                     />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="font-medium">Daily Rate:</span>
-                      <span>${product.price}/day</span>
+                      <span className="font-medium">Precio:</span>
+                      <div className="text-right">
+                        {exchangeRate > 1 ? (
+                          <>
+                            <div className="font-medium">
+                              {formatARS(product.price, exchangeRate)}/día
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {formatUSD(product.price)} USD
+                            </div>
+                          </>
+                        ) : (
+                          <span>{formatUSD(product.price)}/day</span>
+                        )}
+                      </div>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium">Weight:</span>
-                      <span>{product.weight}</span>
+                      <span>{(product.weight / 1000).toFixed(2)} Kg</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium">Specs:</span>
@@ -91,11 +131,13 @@ export default function CatalogPage({
                     </p>
                   </div>
                 </CardContent>
-                <CardFooter>
-                  <Button className="w-full">
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Add to Quote
+                <CardFooter className="flex flex-col gap-2">
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link href={`/catalog/product/${product.id}`}>
+                      Ver detalles
+                    </Link>
                   </Button>
+                  <AddToCartButton product={product} />
                 </CardFooter>
               </Card>
             ))}
@@ -127,28 +169,6 @@ export default function CatalogPage({
   );
 }
 
-function Search(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
-
 const Nav = ({
   categories,
   catselected,
@@ -161,7 +181,6 @@ const Nav = ({
     <div className="px-4 py-6 sm:px-0 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 sm:hidden">
-          {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
           <select
             defaultValue={catselected}
             aria-label="Select a tab"

@@ -21,7 +21,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link href="/catalog">
+                  <Link href="/catalog/all">
                     <Button size="lg">Browse Catalog</Button>
                   </Link>
                   <Link href="/quote">

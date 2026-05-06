@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Trash2, Calendar, Download, Plus, Minus } from "lucide-react";
+import { Trash2, Calendar, Plus, Minus, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -26,19 +26,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Product, Categories } from "@/lib/types";
+import { useCart } from "@/contexts/cart-context";
+import { formatARS, formatUSD } from "@/lib/prices";
+import { dbCreateQuote } from "@/lib/actions";
+import type { DateRange } from "react-day-picker";
 
 export default function QuotePage({
   products,
   categories,
+  exchangeRate = 1,
 }: {
   products: Product[];
   categories: Categories;
+  exchangeRate?: number;
 }) {
-  const [quoteItems, setQuoteItems] = useState([
-    { productId: 1, quantity: 2 },
-    { productId: 3, quantity: 1 },
-  ]);
-  const [dateRange, setDateRange] = useState({ from: new Date(), to: null });
+  const { items, hydrated, updateQuantity, removeItem, clearCart } = useCart();
+
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     email: "",
@@ -47,73 +52,95 @@ export default function QuotePage({
     notes: "",
   });
 
-  const handleQuantityChange = (productId, change) => {
-    setQuoteItems((prev) => {
-      const updated = prev.map((item) => {
-        if (item.productId === productId) {
-          const newQuantity = Math.max(1, item.quantity + change);
-          return { ...item, quantity: newQuantity };
-        }
-        return item;
-      });
-      return updated;
-    });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleQuantityChange = (productId: string, delta: number) => {
+    const item = items.find((i) => i.productId === productId);
+    if (!item) return;
+    const product = products.find((p) => p.id === productId);
+    const maxStock = product?.stock ?? 1;
+    const next = Math.min(maxStock, Math.max(1, item.quantity + delta));
+    updateQuantity(productId, next);
   };
 
-  const handleRemoveItem = (productId) => {
-    setQuoteItems((prev) =>
-      prev.filter((item) => item.productId !== productId),
-    );
-  };
-
-  const handleAddProduct = () => {
-    // In a real app, this would open a modal to select products from the catalog
-    alert(
-      "In a complete implementation, this would open a product selection modal",
-    );
-  };
-
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setCustomerInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCreateQuote = () => {
-    // In a real app, this would submit the quote to the server
-    const quoteData = {
-      customer: customerInfo,
-      dateRange,
-      items: quoteItems.map((item) => {
-        const product = products.find((p) => p.id === item.productId);
-        return {
-          product,
-          quantity: item.quantity,
-          subtotal: product.price * item.quantity,
-        };
-      }),
-      totalDays: dateRange.to
-        ? Math.ceil((dateRange.to - dateRange.from) / (1000 * 60 * 60 * 24))
-        : 1,
-    };
+  const handleSubmitQuote = async () => {
+    if (items.length === 0) {
+      alert("Agregá al menos un producto al presupuesto antes de enviarlo.");
+      return;
+    }
+    if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
+      alert("Por favor completá tu nombre, email y teléfono.");
+      return;
+    }
 
-    console.log("Quote created:", quoteData);
-    alert(
-      "Quote created successfully! In a complete implementation, this would be saved to a database and could be emailed to the customer.",
-    );
+    setSubmitting(true);
+    try {
+      await dbCreateQuote({
+        customer: customerInfo,
+        items: items.map((i) => ({
+          productId: i.productId,
+          quantity: i.quantity,
+        })),
+        startDate: dateRange?.from ?? null,
+        endDate: dateRange?.to ?? null,
+        totalDays: rentalDays,
+      });
+      setSubmitted(true);
+      clearCart();
+    } catch (err) {
+      console.error("Error al guardar el presupuesto:", err);
+      alert("Hubo un error al enviar el presupuesto. Intentá de nuevo.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  // Calculate rental duration in days
-  const rentalDays = dateRange.to
-    ? Math.ceil((dateRange.to - dateRange.from) / (1000 * 60 * 60 * 24))
-    : 1;
+  // Días de alquiler
+  const rentalDays =
+    dateRange?.from && dateRange?.to
+      ? Math.max(
+          1,
+          Math.ceil(
+            (dateRange.to.getTime() - dateRange.from.getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+        )
+      : 1;
 
-  // Calculate totals
-  const subtotal = quoteItems.reduce((sum, item) => {
+  // Subtotal diario
+  const dailySubtotal = items.reduce((sum, item) => {
     const product = products.find((p) => p.id === item.productId);
     return sum + (product ? product.price * item.quantity : 0);
   }, 0);
 
-  const total = subtotal * rentalDays;
+  const total = dailySubtotal * rentalDays;
+
+  const formatPrice = (usd: number) =>
+    exchangeRate > 1 ? formatARS(usd, exchangeRate) : formatUSD(usd);
+
+  if (submitted) {
+    return (
+      <div className="container px-4 py-16 md:px-6 text-center max-w-md mx-auto">
+        <div className="mb-6 text-5xl">✅</div>
+        <h1 className="text-3xl font-bold mb-3">¡Presupuesto enviado!</h1>
+        <p className="text-muted-foreground mb-8">
+          Recibimos tu solicitud. Nos pondremos en contacto a la brevedad a{" "}
+          <strong>{customerInfo.email}</strong>.
+        </p>
+        <Button asChild>
+          <Link href="/catalog/all">Seguir viendo el catálogo</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -121,51 +148,57 @@ export default function QuotePage({
         <div className="container px-4 py-6 md:px-6 md:py-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold tracking-tight">
-              Create Rental Quote
+              Solicitud de Presupuesto
             </h1>
             <p className="text-muted-foreground">
-              Select equipment, rental period, and provide your information
+              Revisá los equipos seleccionados, el período de alquiler y
+              completá tus datos.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Columna principal */}
             <div className="lg:col-span-2 space-y-6">
+              {/* Equipos seleccionados */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex justify-between items-center">
-                    <span>Selected Equipment</span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleAddProduct}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Product
+                    <span>Equipos seleccionados</span>
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href="/catalog/all">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Agregar equipos
+                      </Link>
                     </Button>
                   </CardTitle>
                   <CardDescription>
-                    Equipment you want to include in your rental quote
+                    Equipos que querés incluir en el presupuesto
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {quoteItems.length === 0 ? (
-                    <div className="text-center py-6 text-muted-foreground">
-                      No items added to quote yet. Browse the catalog to add
-                      items.
+                  {items.length === 0 ? (
+                    <div className="text-center py-10 space-y-4">
+                      <ShoppingCart className="mx-auto h-12 w-12 text-muted-foreground/40" />
+                      <p className="text-muted-foreground">
+                        Todavía no agregaste equipos al presupuesto.
+                      </p>
+                      <Button asChild variant="outline">
+                        <Link href="/catalog/all">Ver catálogo</Link>
+                      </Button>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Product</TableHead>
-                          <TableHead>Daily Rate</TableHead>
-                          <TableHead>Quantity</TableHead>
-                          <TableHead>Subtotal</TableHead>
+                          <TableHead>Producto</TableHead>
+                          <TableHead>Precio/día</TableHead>
+                          <TableHead>Cantidad</TableHead>
+                          <TableHead>Subtotal/día</TableHead>
                           <TableHead className="w-[50px]"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {quoteItems.map((item) => {
+                        {items.map((item) => {
                           const product = products.find(
                             (p) => p.id === item.productId,
                           );
@@ -174,49 +207,64 @@ export default function QuotePage({
                           return (
                             <TableRow key={item.productId}>
                               <TableCell>
-                                <div className="font-medium">
-                                  {product.name}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  {product.brand}
-                                </div>
+                                <Link
+                                  href={`/catalog/product/${product.id}`}
+                                  className="hover:underline"
+                                >
+                                  <div className="font-medium">
+                                    {product.name}
+                                  </div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {product.brand}
+                                  </div>
+                                </Link>
                               </TableCell>
-                              <TableCell>${product.price}/day</TableCell>
                               <TableCell>
-                                <div className="flex items-center space-x-2">
+                                {formatPrice(product.price)}
+                                <span className="text-muted-foreground text-xs">
+                                  /día
+                                </span>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center gap-1">
                                   <Button
                                     variant="outline"
                                     size="icon"
-                                    className="h-8 w-8"
+                                    className="h-7 w-7"
                                     onClick={() =>
                                       handleQuantityChange(item.productId, -1)
                                     }
+                                    disabled={item.quantity <= 1}
                                   >
-                                    <Minus className="h-4 w-4" />
+                                    <Minus className="h-3 w-3" />
                                   </Button>
-                                  <span>{item.quantity}</span>
+                                  <span className="w-6 text-center text-sm font-medium">
+                                    {item.quantity}
+                                  </span>
                                   <Button
                                     variant="outline"
                                     size="icon"
-                                    className="h-8 w-8"
+                                    className="h-7 w-7"
                                     onClick={() =>
                                       handleQuantityChange(item.productId, 1)
                                     }
+                                    disabled={item.quantity >= product.stock}
                                   >
-                                    <Plus className="h-4 w-4" />
+                                    <Plus className="h-3 w-3" />
                                   </Button>
                                 </div>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {product.stock} disponibles
+                                </p>
                               </TableCell>
                               <TableCell>
-                                ${product.price * item.quantity}
+                                {formatPrice(product.price * item.quantity)}
                               </TableCell>
                               <TableCell>
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  onClick={() =>
-                                    handleRemoveItem(item.productId)
-                                  }
+                                  onClick={() => removeItem(item.productId)}
                                 >
                                   <Trash2 className="h-4 w-4 text-muted-foreground" />
                                 </Button>
@@ -230,11 +278,12 @@ export default function QuotePage({
                 </CardContent>
               </Card>
 
+              {/* Período de alquiler */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Rental Period</CardTitle>
+                  <CardTitle>Período de alquiler</CardTitle>
                   <CardDescription>
-                    Select the start and end dates for your rental
+                    Seleccioná las fechas de inicio y fin del alquiler
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -247,78 +296,87 @@ export default function QuotePage({
                     </div>
                     <div className="flex-1 space-y-2">
                       <div className="flex justify-between">
-                        <span>Rental Duration:</span>
+                        <span>Duración del alquiler:</span>
                         <Badge variant="outline">
-                          {rentalDays} day{rentalDays !== 1 ? "s" : ""}
+                          {rentalDays} día{rentalDays !== 1 ? "s" : ""}
                         </Badge>
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        Equipment will be available for pickup on the start date
-                        and must be returned by the end date.
-                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Los equipos estarán disponibles para retiro a partir de
+                        la fecha de inicio y deben ser devueltos antes de la
+                        fecha de fin.
+                      </p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
+              {/* Datos del cliente */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Customer Information</CardTitle>
+                  <CardTitle>Tus datos</CardTitle>
                   <CardDescription>
-                    Provide your contact details for the quote
+                    Completá tus datos de contacto para recibir el presupuesto
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
+                      <Label htmlFor="name">
+                        Nombre completo{" "}
+                        <span className="text-destructive">*</span>
+                      </Label>
                       <Input
                         id="name"
                         name="name"
                         value={customerInfo.name}
                         onChange={handleInputChange}
-                        placeholder="John Doe"
+                        placeholder="Juan García"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">
+                        Email <span className="text-destructive">*</span>
+                      </Label>
                       <Input
                         id="email"
                         name="email"
                         type="email"
                         value={customerInfo.email}
                         onChange={handleInputChange}
-                        placeholder="john@example.com"
+                        placeholder="juan@ejemplo.com"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
+                      <Label htmlFor="phone">
+                        Teléfono <span className="text-destructive">*</span>
+                      </Label>
                       <Input
                         id="phone"
                         name="phone"
                         value={customerInfo.phone}
                         onChange={handleInputChange}
-                        placeholder="(123) 456-7890"
+                        placeholder="+54 11 1234-5678"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="company">Company (Optional)</Label>
+                      <Label htmlFor="company">Empresa (opcional)</Label>
                       <Input
                         id="company"
                         name="company"
                         value={customerInfo.company}
                         onChange={handleInputChange}
-                        placeholder="Company Name"
+                        placeholder="Nombre de la empresa"
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="notes">Additional Notes</Label>
+                      <Label htmlFor="notes">Notas adicionales</Label>
                       <Input
                         id="notes"
                         name="notes"
                         value={customerInfo.notes}
                         onChange={handleInputChange}
-                        placeholder="Any special requirements or questions"
+                        placeholder="Requerimientos especiales, preguntas, etc."
                       />
                     </div>
                   </div>
@@ -326,96 +384,120 @@ export default function QuotePage({
               </Card>
             </div>
 
+            {/* Resumen */}
             <div>
               <Card className="sticky top-6">
                 <CardHeader>
-                  <CardTitle>Quote Summary</CardTitle>
+                  <CardTitle>Resumen</CardTitle>
                   <CardDescription>
-                    Review your rental quote details
+                    Detalle de tu solicitud de presupuesto
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <div className="text-sm font-medium">Rental Period</div>
-                      <div className="flex items-center mt-1">
-                        <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span>
-                          {dateRange.from
-                            ? dateRange.from.toLocaleDateString()
-                            : "Start date"}
-                          {" - "}
-                          {dateRange.to
-                            ? dateRange.to.toLocaleDateString()
-                            : "End date"}
+                      <div className="text-sm font-medium">
+                        Período de alquiler
+                      </div>
+                      <div className="flex items-center mt-1 gap-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">
+                          {dateRange?.from
+                            ? dateRange.from.toLocaleDateString("es-AR")
+                            : "Fecha inicio"}
+                          {" → "}
+                          {dateRange?.to
+                            ? dateRange.to.toLocaleDateString("es-AR")
+                            : "Fecha fin"}
                         </span>
                       </div>
-                      <div className="text-sm text-muted-foreground mt-1">
-                        {rentalDays} day{rentalDays !== 1 ? "s" : ""}
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {rentalDays} día{rentalDays !== 1 ? "s" : ""}
                       </div>
                     </div>
 
                     <Separator />
 
                     <div>
-                      <div className="text-sm font-medium">
-                        Equipment (
-                        {quoteItems.reduce(
-                          (sum, item) => sum + item.quantity,
-                          0,
-                        )}{" "}
-                        items)
+                      <div className="text-sm font-medium mb-2">
+                        Equipos ({items.reduce((s, i) => s + i.quantity, 0)}{" "}
+                        unidades)
                       </div>
-                      <ul className="mt-2 space-y-2">
-                        {quoteItems.map((item) => {
-                          const product = products.find(
-                            (p) => p.id === item.productId,
-                          );
-                          if (!product) return null;
-
-                          return (
-                            <li
-                              key={item.productId}
-                              className="flex justify-between text-sm"
-                            >
-                              <span>
-                                {product.name} (x{item.quantity})
-                              </span>
-                              <span>${product.price * item.quantity}</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
+                      {items.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">
+                          Sin equipos aún.{" "}
+                          <Link href="/catalog/all" className="underline">
+                            Ver catálogo
+                          </Link>
+                        </p>
+                      ) : (
+                        <ul className="space-y-1.5">
+                          {items.map((item) => {
+                            const product = products.find(
+                              (p) => p.id === item.productId,
+                            );
+                            if (!product) return null;
+                            return (
+                              <li
+                                key={item.productId}
+                                className="flex justify-between text-sm"
+                              >
+                                <span className="text-muted-foreground">
+                                  {product.name}{" "}
+                                  <span className="font-medium text-foreground">
+                                    ×{item.quantity}
+                                  </span>
+                                </span>
+                                <span>
+                                  {formatPrice(product.price * item.quantity)}
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
                     </div>
 
                     <Separator />
 
-                    <div className="space-y-1">
-                      <div className="flex justify-between">
-                        <span>Daily Subtotal:</span>
-                        <span>${subtotal}</span>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">
+                          Subtotal/día:
+                        </span>
+                        <span>{formatPrice(dailySubtotal)}</span>
                       </div>
                       <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>Rental Duration:</span>
+                        <span>Duración:</span>
                         <span>
-                          {rentalDays} day{rentalDays !== 1 ? "s" : ""}
+                          × {rentalDays} día{rentalDays !== 1 ? "s" : ""}
                         </span>
                       </div>
                       <Separator className="my-2" />
-                      <div className="flex justify-between font-medium text-lg">
-                        <span>Total:</span>
-                        <span>${total}</span>
+                      <div className="flex justify-between font-semibold text-lg">
+                        <span>Total estimado:</span>
+                        <span>{formatPrice(total)}</span>
                       </div>
+                      {exchangeRate > 1 && total > 0 && (
+                        <div className="text-xs text-muted-foreground text-right">
+                          ({formatUSD(total)} USD)
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
                 <CardFooter className="flex flex-col gap-2">
-                  <Button className="w-full" onClick={handleCreateQuote}>
-                    Create Quote
+                  <Button
+                    className="w-full"
+                    onClick={handleSubmitQuote}
+                    disabled={submitting || (hydrated && items.length === 0)}
+                  >
+                    {submitting
+                      ? "Enviando..."
+                      : "Enviar solicitud de presupuesto"}
                   </Button>
-                  <Button variant="outline" className="w-full">
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Quote PDF
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link href="/catalog/all">Seguir agregando equipos</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -426,20 +508,21 @@ export default function QuotePage({
       <footer className="border-t">
         <div className="container flex flex-col gap-2 py-4 md:h-16 md:flex-row md:items-center md:py-0 px-4 md:px-6">
           <div className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} AudioRent Pro. All rights reserved.
+            © {new Date().getFullYear()} ProSonus. Todos los derechos
+            reservados.
           </div>
           <nav className="md:ml-auto flex gap-4 sm:gap-6">
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Terms of Service
+              Términos y condiciones
             </Link>
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Privacy
+              Privacidad
             </Link>
           </nav>
         </div>

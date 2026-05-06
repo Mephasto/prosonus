@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Headphones, Plus, Pencil, Trash2, Search, Filter } from "lucide-react";
+import { Headphones, Plus, Pencil, Trash2, Search, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,46 +32,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Product } from "@/lib/types";
-import { dbNewProduct, dbUpdateProduct, dbDeleteProduct } from "@/lib/actions";
+import { Product, StoreConfig, Quote } from "@/lib/types";
+import {
+  dbNewProduct,
+  dbUpdateProduct,
+  dbDeleteProduct,
+  dbUpdateStoreConfig,
+} from "@/lib/actions";
+import { useProductFilters } from "@/hooks/use-product-filters";
+import ProductFilterBar from "@/components/product-filter-bar";
+import ImageUpload from "@/components/image-upload";
 
-// Mock data for quotes
-const initialQuotes = [
-  {
-    id: 1,
-    customer: "John Smith",
-    email: "john@example.com",
-    company: "Event Productions",
-    startDate: "2023-05-15",
-    endDate: "2023-05-18",
-    status: "Pending",
-    total: 845,
-  },
-  {
-    id: 2,
-    customer: "Sarah Johnson",
-    email: "sarah@example.com",
-    company: "Studio Records",
-    startDate: "2023-05-20",
-    endDate: "2023-05-25",
-    status: "Approved",
-    total: 1250,
-  },
-  {
-    id: 3,
-    customer: "Michael Brown",
-    email: "michael@example.com",
-    company: "Wedding DJ Services",
-    startDate: "2023-06-01",
-    endDate: "2023-06-02",
-    status: "Completed",
-    total: 450,
-  },
-];
-
-export default function AdminPage(initialProducts: Product[]) {
-  const [products, setProducts] = useState(initialProducts.data);
-  const [quotes, setQuotes] = useState(initialQuotes);
+export default function AdminPage({
+  products: initialProducts,
+  initialConfig,
+  initialQuotes,
+}: {
+  products: Product[];
+  initialConfig: StoreConfig;
+  initialQuotes: Quote[];
+}) {
+  const [products, setProducts] = useState(initialProducts);
+  const {
+    searchQuery,
+    setSearchQuery,
+    filterBrand,
+    setFilterBrand,
+    filterCategory,
+    setFilterCategory,
+    filteredProducts,
+    brands,
+    isFiltered,
+    clearFilters,
+  } = useProductFilters(products);
+  const [configForm, setConfigForm] = useState({
+    exchangeRate: String(initialConfig.exchangeRate),
+  });
+  const [configSaving, setConfigSaving] = useState(false);
+  const [configSaved, setConfigSaved] = useState(false);
+  const [quotes, setQuotes] = useState<Quote[]>(initialQuotes);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [newProduct, setNewProduct] = useState({
@@ -80,9 +78,11 @@ export default function AdminPage(initialProducts: Product[]) {
     brand: "",
     price: "",
     weight: "",
+    stock: "",
     specs: "",
     description: "",
     category: "",
+    imageUrl: "",
   });
 
   const handleEditProduct = (product) => {
@@ -113,9 +113,11 @@ export default function AdminPage(initialProducts: Product[]) {
       brand: "",
       price: "",
       weight: "",
+      stock: "",
       specs: "",
       description: "",
       category: "",
+      imageUrl: "",
     });
   };
 
@@ -139,6 +141,17 @@ export default function AdminPage(initialProducts: Product[]) {
     }
   };
 
+  const handleSaveConfig = async () => {
+    setConfigSaving(true);
+    setConfigSaved(false);
+    await dbUpdateStoreConfig({
+      exchangeRate: parseInt(configForm.exchangeRate, 10) || 1,
+    });
+    setConfigSaving(false);
+    setConfigSaved(true);
+    setTimeout(() => setConfigSaved(false), 3000);
+  };
+
   return (
     <div>
       <main className="flex-1">
@@ -156,28 +169,29 @@ export default function AdminPage(initialProducts: Product[]) {
             <TabsList className="mb-4">
               <TabsTrigger value="products">Products</TabsTrigger>
               <TabsTrigger value="quotes">Quotes</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
 
             <TabsContent value="products">
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex items-center gap-2">
-                  <div className="relative w-64">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search products..."
-                      className="pl-8"
-                    />
-                  </div>
-                  <Button variant="outline" size="icon">
-                    <Filter className="h-4 w-4" />
-                    <span className="sr-only">Filter</span>
+              <div className="mb-4">
+                <ProductFilterBar
+                  brands={brands}
+                  searchQuery={searchQuery}
+                  filterBrand={filterBrand}
+                  filterCategory={filterCategory}
+                  onSearchChange={setSearchQuery}
+                  onBrandChange={setFilterBrand}
+                  onCategoryChange={setFilterCategory}
+                  onClear={clearFilters}
+                  isFiltered={isFiltered}
+                  resultCount={filteredProducts.length}
+                  totalCount={products.length}
+                >
+                  <Button onClick={() => setIsAddingProduct(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Product
                   </Button>
-                </div>
-                <Button onClick={() => setIsAddingProduct(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Product
-                </Button>
+                </ProductFilterBar>
               </div>
 
               {isAddingProduct && (
@@ -263,6 +277,18 @@ export default function AdminPage(initialProducts: Product[]) {
                         />
                       </div>
                       <div className="space-y-2">
+                        <Label htmlFor="stock">Stock</Label>
+                        <Input
+                          id="stock"
+                          name="stock"
+                          type="number"
+                          min="0"
+                          value={newProduct.stock}
+                          onChange={(e) => handleInputChange(e)}
+                          placeholder="0"
+                        />
+                      </div>
+                      <div className="space-y-2">
                         <Label htmlFor="specs">Specifications</Label>
                         <Input
                           id="specs"
@@ -282,6 +308,17 @@ export default function AdminPage(initialProducts: Product[]) {
                           onChange={(e) => handleInputChange(e)}
                           placeholder="Detailed description of the product"
                           rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <Label>Product Image</Label>
+                        <ImageUpload
+                          onUpload={(key) =>
+                            setNewProduct((prev) => ({
+                              ...prev,
+                              imageUrl: key,
+                            }))
+                          }
                         />
                       </div>
                     </div>
@@ -376,11 +413,22 @@ export default function AdminPage(initialProducts: Product[]) {
                         />
                       </div>
                       <div className="space-y-2">
+                        <Label htmlFor="edit-stock">Stock</Label>
+                        <Input
+                          id="edit-stock"
+                          name="stock"
+                          type="number"
+                          min="0"
+                          value={editingProduct.stock ?? ""}
+                          onChange={(e) => handleInputChange(e, true)}
+                        />
+                      </div>
+                      <div className="space-y-2">
                         <Label htmlFor="edit-specs">Specifications</Label>
                         <Input
                           id="edit-specs"
                           name="specs"
-                          value={editingProduct.specs}
+                          value={editingProduct.specs ?? ""}
                           onChange={(e) => handleInputChange(e, true)}
                         />
                       </div>
@@ -389,9 +437,21 @@ export default function AdminPage(initialProducts: Product[]) {
                         <Textarea
                           id="edit-description"
                           name="description"
-                          value={editingProduct.description}
+                          value={editingProduct.description ?? ""}
                           onChange={(e) => handleInputChange(e, true)}
                           rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2 md:col-span-2">
+                        <Label>Product Image</Label>
+                        <ImageUpload
+                          currentImageUrl={editingProduct.imageUrl}
+                          onUpload={(key) =>
+                            setEditingProduct((prev) => ({
+                              ...prev,
+                              imageUrl: key,
+                            }))
+                          }
                         />
                       </div>
                     </div>
@@ -425,11 +485,12 @@ export default function AdminPage(initialProducts: Product[]) {
                         <TableHead>Brand</TableHead>
                         <TableHead>Category</TableHead>
                         <TableHead>Daily Rate</TableHead>
+                        <TableHead>Stock</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {products.map((product) => (
+                      {filteredProducts.map((product) => (
                         <TableRow key={product.id}>
                           <TableCell className="font-medium">
                             {product.name}
@@ -439,6 +500,7 @@ export default function AdminPage(initialProducts: Product[]) {
                             <Badge variant="outline">{product.category}</Badge>
                           </TableCell>
                           <TableCell>${product.price}/day</TableCell>
+                          <TableCell>{product.stock}</TableCell>
                           <TableCell>
                             <div className="flex gap-2">
                               <Button
@@ -478,10 +540,6 @@ export default function AdminPage(initialProducts: Product[]) {
                       className="pl-8"
                     />
                   </div>
-                  <Button variant="outline" size="icon">
-                    <Filter className="h-4 w-4" />
-                    <span className="sr-only">Filter</span>
-                  </Button>
                 </div>
               </div>
 
@@ -506,49 +564,133 @@ export default function AdminPage(initialProducts: Product[]) {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {quotes.map((quote) => (
-                        <TableRow key={quote.id}>
-                          <TableCell className="font-medium">
-                            #{quote.id}
-                          </TableCell>
-                          <TableCell>
-                            <div>{quote.customer}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {quote.email}
-                            </div>
-                          </TableCell>
-                          <TableCell>{quote.company}</TableCell>
-                          <TableCell>
-                            {new Date(quote.startDate).toLocaleDateString()} -{" "}
-                            {new Date(quote.endDate).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={
-                                quote.status === "Approved"
-                                  ? "default"
-                                  : quote.status === "Pending"
-                                    ? "outline"
-                                    : "secondary"
-                              }
-                            >
-                              {quote.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>${quote.total}</TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button variant="ghost" size="icon">
-                                <Pencil className="h-4 w-4" />
-                                <span className="sr-only">Edit</span>
-                              </Button>
-                            </div>
+                      {quotes.length === 0 ? (
+                        <TableRow>
+                          <TableCell
+                            colSpan={7}
+                            className="text-center py-12 text-muted-foreground"
+                          >
+                            No hay presupuestos aún.
                           </TableCell>
                         </TableRow>
-                      ))}
+                      ) : (
+                        quotes.map((quote) => (
+                          <TableRow key={quote.id}>
+                            <TableCell className="font-medium">
+                              #{quote.id}
+                            </TableCell>
+                            <TableCell>
+                              <div>{quote.customer.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {quote.customer.email}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {quote.customer.company ?? "—"}
+                            </TableCell>
+                            <TableCell>
+                              {quote.startDate
+                                ? new Date(quote.startDate).toLocaleDateString(
+                                    "es-AR",
+                                  )
+                                : "—"}
+                              {" - "}
+                              {quote.endDate
+                                ? new Date(quote.endDate).toLocaleDateString(
+                                    "es-AR",
+                                  )
+                                : "—"}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  quote.status === "APPROVED"
+                                    ? "default"
+                                    : quote.status === "PENDING"
+                                      ? "outline"
+                                      : "destructive"
+                                }
+                              >
+                                {quote.status === "APPROVED"
+                                  ? "Aprobado"
+                                  : quote.status === "PENDING"
+                                    ? "Pendiente"
+                                    : "Cancelado"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {quote.totalDays} día
+                              {quote.totalDays !== 1 ? "s" : ""}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex gap-2">
+                                <Button variant="ghost" size="icon" asChild>
+                                  <Link href={"/admin/quotes/" + quote.id}>
+                                    <Eye className="h-4 w-4" />
+                                    <span className="sr-only">Ver detalle</span>
+                                  </Link>
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="settings">
+              <Card className="max-w-lg">
+                <CardHeader>
+                  <CardTitle>Configuración de la tienda</CardTitle>
+                  <CardDescription>
+                    Variables generales que afectan las vistas públicas del
+                    catálogo.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="exchangeRate">
+                      Tipo de cambio (USD → ARS)
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground w-12">
+                        USD 1 =
+                      </span>
+                      <Input
+                        id="exchangeRate"
+                        type="number"
+                        min="1"
+                        value={configForm.exchangeRate}
+                        onChange={(e) =>
+                          setConfigForm({
+                            ...configForm,
+                            exchangeRate: e.target.value,
+                          })
+                        }
+                        className="w-40"
+                      />
+                      <span className="text-sm text-muted-foreground">ARS</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Los precios en USD se multiplican por este valor para
+                      mostrarse en ARS en el catálogo público. Usá 1 para
+                      mostrar solo USD.
+                    </p>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex items-center gap-3">
+                  <Button onClick={handleSaveConfig} disabled={configSaving}>
+                    {configSaving ? "Guardando..." : "Guardar cambios"}
+                  </Button>
+                  {configSaved && (
+                    <span className="text-sm text-green-500">
+                      ✓ Guardado correctamente
+                    </span>
+                  )}
+                </CardFooter>
               </Card>
             </TabsContent>
           </Tabs>
