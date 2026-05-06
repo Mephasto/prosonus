@@ -49,10 +49,11 @@ export default function CatalogPage({
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                Audio Equipment Catalog
+                Catálogo de Equipos
               </h1>
               <p className="text-muted-foreground">
-                Browse our selection of professional audio equipment for rent
+                Explorá nuestra selección de equipos de audio profesional para
+                alquilar
               </p>
             </div>
             <div className="w-full md:w-auto">
@@ -114,16 +115,16 @@ export default function CatalogPage({
                             </div>
                           </>
                         ) : (
-                          <span>{formatUSD(product.price)}/day</span>
+                          <span>{formatUSD(product.price)}/día</span>
                         )}
                       </div>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium">Weight:</span>
+                      <span className="font-medium">Peso:</span>
                       <span>{(product.weight / 1000).toFixed(2)} Kg</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium">Specs:</span>
+                      <span className="font-medium">Especificaciones:</span>
                       <span className="text-right">{product.specs}</span>
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -147,20 +148,21 @@ export default function CatalogPage({
       <footer className="border-t">
         <div className="container flex flex-col gap-2 py-4 md:h-16 md:flex-row md:items-center md:py-0 px-4 md:px-6">
           <div className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} AudioRent Pro. All rights reserved.
+            © {new Date().getFullYear()} ProSonus. Todos los derechos
+            reservados.
           </div>
           <nav className="md:ml-auto flex gap-4 sm:gap-6">
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Terms of Service
+              Términos y condiciones
             </Link>
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Privacy
+              Privacidad
             </Link>
           </nav>
         </div>

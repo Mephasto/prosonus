@@ -34,7 +34,7 @@ export default function ProductDetail({
           <Button variant="ghost" size="sm" asChild>
             <Link href={`/catalog/${product.category}`}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to {categoryLabel}
+              Volver a {categoryLabel}
             </Link>
           </Button>
         </div>
@@ -85,7 +85,7 @@ export default function ProductDetail({
                   <span className="text-4xl font-bold">
                     {formatUSD(product.price)}
                   </span>
-                  <span className="text-muted-foreground text-sm">/ day</span>
+                  <span className="text-muted-foreground text-sm">/día</span>
                 </>
               )}
             </div>
@@ -97,16 +97,16 @@ export default function ProductDetail({
                 <Package className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
-                    Availability
+                    Disponibilidad
                   </p>
                   <div className="flex items-center gap-2">
                     <p className="font-medium">
-                      {product.stock} unit{product.stock !== 1 ? "s" : ""}{" "}
-                      available
+                      {product.stock} unidad{product.stock !== 1 ? "es" : ""}{" "}
+                      disponible{product.stock !== 1 ? "s" : ""}
                     </p>
                     {product.stock === 0 && (
                       <Badge variant="destructive" className="text-xs">
-                        Out of stock
+                        Sin stock
                       </Badge>
                     )}
                     {product.stock > 0 && product.stock <= 3 && (
@@ -114,7 +114,7 @@ export default function ProductDetail({
                         variant="outline"
                         className="text-xs text-yellow-500 border-yellow-500"
                       >
-                        Low stock
+                        Stock bajo
                       </Badge>
                     )}
                     {product.stock > 3 && (
@@ -122,7 +122,7 @@ export default function ProductDetail({
                         variant="outline"
                         className="text-xs text-green-500 border-green-500"
                       >
-                        In stock
+                        Disponible
                       </Badge>
                     )}
                   </div>
@@ -133,7 +133,7 @@ export default function ProductDetail({
                 <Weight className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
-                    Weight
+                    Peso
                   </p>
                   <p className="font-medium">{weightKg} Kg</p>
                 </div>
@@ -144,7 +144,7 @@ export default function ProductDetail({
                   <Zap className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
-                      Specs
+                      Especificaciones
                     </p>
                     <p className="font-medium leading-relaxed">
                       {product.specs}
@@ -158,7 +158,7 @@ export default function ProductDetail({
                   <FileText className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
-                      Description
+                      Descripción
                     </p>
                     <p className="text-muted-foreground leading-relaxed">
                       {product.description}

@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/select";
 
 const CATEGORIES = [
-  { value: "MICROPHONES", label: "Microphones" },
-  { value: "MIXERS", label: "Mixers" },
-  { value: "PAS", label: "Speakers" },
-  { value: "DJ", label: "DJ Equipment" },
-  { value: "HEADPHONES", label: "Headphones" },
+  { value: "MICROPHONES", label: "Micrófonos" },
+  { value: "MIXERS", label: "Mezcladores" },
+  { value: "PAS", label: "Sistemas PA" },
+  { value: "DJ", label: "Equipos DJ" },
+  { value: "HEADPHONES", label: "Audífonos" },
   { value: "CABLES", label: "Cables" },
-  { value: "ACCESOSORIES", label: "Accessories" },
+  { value: "ACCESOSORIES", label: "Accesorios" },
 ];
 
 interface ProductFilterBarProps {
@@ -59,7 +59,7 @@ export default function ProductFilterBar({
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search products..."
+            placeholder="Buscar productos..."
             className="pl-8"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -68,10 +68,10 @@ export default function ProductFilterBar({
 
         <Select value={filterBrand} onValueChange={onBrandChange}>
           <SelectTrigger className="w-44">
-            <SelectValue placeholder="All brands" />
+            <SelectValue placeholder="Todas las marcas" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All brands</SelectItem>
+            <SelectItem value="all">Todas las marcas</SelectItem>
             {brands.map((brand) => (
               <SelectItem key={brand} value={brand}>
                 {brand}
@@ -83,10 +83,10 @@ export default function ProductFilterBar({
         {showCategoryFilter && (
           <Select value={filterCategory} onValueChange={onCategoryChange}>
             <SelectTrigger className="w-44">
-              <SelectValue placeholder="All categories" />
+              <SelectValue placeholder="Todas las categorías" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
+              <SelectItem value="all">Todas las categorías</SelectItem>
               {CATEGORIES.map((cat) => (
                 <SelectItem key={cat.value} value={cat.value}>
                   {cat.label}
@@ -98,7 +98,7 @@ export default function ProductFilterBar({
 
         {isFiltered && (
           <Button variant="ghost" size="sm" onClick={onClear}>
-            Clear filters
+            Limpiar filtros
           </Button>
         )}
 
@@ -107,7 +107,7 @@ export default function ProductFilterBar({
 
       {isFiltered && (
         <p className="text-sm text-muted-foreground">
-          Showing {resultCount} of {totalCount} products
+          Mostrando {resultCount} de {totalCount} productos
         </p>
       )}
     </div>

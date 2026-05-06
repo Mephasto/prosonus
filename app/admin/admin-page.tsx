@@ -158,18 +158,18 @@ export default function AdminPage({
         <div className="container px-4 py-6 md:px-6 md:py-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold tracking-tight">
-              Admin Dashboard
+              Panel de administración
             </h1>
             <p className="text-muted-foreground">
-              Manage your audio equipment catalog and rental quotes
+              Gestioná el catálogo de equipos y los presupuestos de alquiler
             </p>
           </div>
 
           <Tabs defaultValue="products">
             <TabsList className="mb-4">
-              <TabsTrigger value="products">Products</TabsTrigger>
-              <TabsTrigger value="quotes">Quotes</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="products">Productos</TabsTrigger>
+              <TabsTrigger value="quotes">Presupuestos</TabsTrigger>
+              <TabsTrigger value="settings">Configuración</TabsTrigger>
             </TabsList>
 
             <TabsContent value="products">
@@ -189,7 +189,7 @@ export default function AdminPage({
                 >
                   <Button onClick={() => setIsAddingProduct(true)}>
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Product
+                    Agregar producto
                   </Button>
                 </ProductFilterBar>
               </div>
@@ -197,26 +197,26 @@ export default function AdminPage({
               {isAddingProduct && (
                 <Card className="mb-6">
                   <CardHeader>
-                    <CardTitle>Add New Product</CardTitle>
+                    <CardTitle>Agregar nuevo producto</CardTitle>
                     <CardDescription>
-                      Enter the details for the new audio equipment
+                      Ingresá los datos del nuevo equipo
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Product Name</Label>
+                        <Label htmlFor="name">Nombre del producto</Label>
                         <Input
                           id="name"
                           name="name"
                           type="text"
                           value={newProduct.name}
                           onChange={(e) => handleInputChange(e)}
-                          placeholder="Professional Audio Mixer"
+                          placeholder="Mezcladora de Audio Profesional"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="brand">Brand</Label>
+                        <Label htmlFor="brand">Marca</Label>
                         <Input
                           id="brand"
                           name="brand"
@@ -227,7 +227,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="category">Category</Label>
+                        <Label htmlFor="category">Categoría</Label>
                         <Select
                           onValueChange={(value) =>
                             handleSelectChange(value, "category")
@@ -235,27 +235,29 @@ export default function AdminPage({
                           value={newProduct.category}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue placeholder="Seleccioná una categoría" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="MICROPHONES">
-                              Microphones
+                              Micrófonos
                             </SelectItem>
-                            <SelectItem value="PAS">Speakers</SelectItem>
-                            <SelectItem value="MIXERS">Mixers</SelectItem>
+                            <SelectItem value="PAS">Sistemas PA</SelectItem>
+                            <SelectItem value="MIXERS">Mezcladores</SelectItem>
                             <SelectItem value="HEADPHONES">
-                              Headphones
+                              Audífonos
                             </SelectItem>
-                            <SelectItem value="DJ">DJ Equipment</SelectItem>
+                            <SelectItem value="DJ">Equipos DJ</SelectItem>
                             <SelectItem value="CABLES">Cables</SelectItem>
                             <SelectItem value="ACCESOSORIES">
-                              Accessories
+                              Accesorios
                             </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="price">Daily Rental Price ($)</Label>
+                        <Label htmlFor="price">
+                          Precio diario de alquiler (USD)
+                        </Label>
                         <Input
                           id="price"
                           name="price"
@@ -266,7 +268,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="weight">Weight</Label>
+                        <Label htmlFor="weight">Peso (gramos)</Label>
                         <Input
                           id="weight"
                           name="weight"
@@ -289,7 +291,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="specs">Specifications</Label>
+                        <Label htmlFor="specs">Especificaciones</Label>
                         <Input
                           id="specs"
                           name="specs"
@@ -300,7 +302,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="description">Descripción</Label>
                         <Textarea
                           id="description"
                           name="description"
@@ -311,7 +313,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label>Product Image</Label>
+                        <Label>Imagen del producto</Label>
                         <ImageUpload
                           onUpload={(key) =>
                             setNewProduct((prev) => ({
@@ -328,9 +330,9 @@ export default function AdminPage({
                       variant="outline"
                       onClick={() => setIsAddingProduct(false)}
                     >
-                      Cancel
+                      Cancelar
                     </Button>
-                    <Button onClick={handleAddProduct}>Add Product</Button>
+                    <Button onClick={handleAddProduct}>Agregar producto</Button>
                   </CardFooter>
                 </Card>
               )}
@@ -338,15 +340,15 @@ export default function AdminPage({
               {editingProduct && (
                 <Card className="mb-6">
                   <CardHeader>
-                    <CardTitle>Edit Product</CardTitle>
+                    <CardTitle>Editar producto</CardTitle>
                     <CardDescription>
-                      Update the details for this audio equipment
+                      Modificá los datos de este equipo
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="edit-name">Product Name</Label>
+                        <Label htmlFor="edit-name">Nombre del producto</Label>
                         <Input
                           id="edit-name"
                           name="name"
@@ -355,7 +357,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-brand">Brand</Label>
+                        <Label htmlFor="edit-brand">Marca</Label>
                         <Input
                           id="edit-brand"
                           name="brand"
@@ -364,7 +366,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-category">Category</Label>
+                        <Label htmlFor="edit-category">Categoría</Label>
                         <Select
                           onValueChange={(value) =>
                             handleSelectChange(value, "category", true)
@@ -372,28 +374,28 @@ export default function AdminPage({
                           value={editingProduct.category}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue placeholder="Seleccioná una categoría" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="MICROPHONES">
-                              Microphones
+                              Micrófonos
                             </SelectItem>
-                            <SelectItem value="PAS">Speakers</SelectItem>
-                            <SelectItem value="MIXERS">Mixers</SelectItem>
+                            <SelectItem value="PAS">Sistemas PA</SelectItem>
+                            <SelectItem value="MIXERS">Mezcladores</SelectItem>
                             <SelectItem value="HEADPHONES">
-                              Headphones
+                              Audífonos
                             </SelectItem>
-                            <SelectItem value="DJ">DJ Equipment</SelectItem>
+                            <SelectItem value="DJ">Equipos DJ</SelectItem>
                             <SelectItem value="CABLES">Cables</SelectItem>
                             <SelectItem value="ACCESOSORIES">
-                              Accessories
+                              Accesorios
                             </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="edit-price">
-                          Daily Rental Price ($)
+                          Precio diario de alquiler (USD)
                         </Label>
                         <Input
                           id="edit-price"
@@ -404,7 +406,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-weight">Weight</Label>
+                        <Label htmlFor="edit-weight">Peso (gramos)</Label>
                         <Input
                           id="edit-weight"
                           name="weight"
@@ -424,7 +426,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-specs">Specifications</Label>
+                        <Label htmlFor="edit-specs">Especificaciones</Label>
                         <Input
                           id="edit-specs"
                           name="specs"
@@ -433,7 +435,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="edit-description">Description</Label>
+                        <Label htmlFor="edit-description">Descripción</Label>
                         <Textarea
                           id="edit-description"
                           name="description"
@@ -443,7 +445,7 @@ export default function AdminPage({
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label>Product Image</Label>
+                        <Label>Imagen del producto</Label>
                         <ImageUpload
                           currentImageUrl={editingProduct.imageUrl}
                           onUpload={(key) =>
@@ -461,10 +463,10 @@ export default function AdminPage({
                       variant="outline"
                       onClick={() => setEditingProduct(null)}
                     >
-                      Cancel
+                      Cancelar
                     </Button>
                     <Button onClick={handleUpdateProduct}>
-                      Update Product
+                      Guardar cambios
                     </Button>
                   </CardFooter>
                 </Card>
@@ -472,21 +474,21 @@ export default function AdminPage({
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Product Catalog</CardTitle>
+                  <CardTitle>Catálogo de productos</CardTitle>
                   <CardDescription>
-                    Manage your audio equipment inventory
+                    Gestioná el inventario de equipos
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Brand</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Daily Rate</TableHead>
+                        <TableHead>Nombre</TableHead>
+                        <TableHead>Marca</TableHead>
+                        <TableHead>Categoría</TableHead>
+                        <TableHead>Precio/día</TableHead>
                         <TableHead>Stock</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -499,7 +501,7 @@ export default function AdminPage({
                           <TableCell>
                             <Badge variant="outline">{product.category}</Badge>
                           </TableCell>
-                          <TableCell>${product.price}/day</TableCell>
+                          <TableCell>USD {product.price}/día</TableCell>
                           <TableCell>{product.stock}</TableCell>
                           <TableCell>
                             <div className="flex gap-2">
@@ -509,7 +511,7 @@ export default function AdminPage({
                                 onClick={() => handleEditProduct(product)}
                               >
                                 <Pencil className="h-4 w-4" />
-                                <span className="sr-only">Edit</span>
+                                <span className="sr-only">Editar</span>
                               </Button>
                               <Button
                                 variant="ghost"
@@ -517,7 +519,7 @@ export default function AdminPage({
                                 onClick={() => handleDeleteProduct(product.id)}
                               >
                                 <Trash2 className="h-4 w-4" />
-                                <span className="sr-only">Delete</span>
+                                <span className="sr-only">Eliminar</span>
                               </Button>
                             </div>
                           </TableCell>
@@ -536,7 +538,7 @@ export default function AdminPage({
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="search"
-                      placeholder="Search quotes..."
+                      placeholder="Buscar presupuestos..."
                       className="pl-8"
                     />
                   </div>
@@ -545,9 +547,9 @@ export default function AdminPage({
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Customer Quotes</CardTitle>
+                  <CardTitle>Presupuestos de clientes</CardTitle>
                   <CardDescription>
-                    Manage rental quotes and their status
+                    Gestioná los presupuestos y su estado
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -555,12 +557,12 @@ export default function AdminPage({
                     <TableHeader>
                       <TableRow>
                         <TableHead>ID</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Company</TableHead>
-                        <TableHead>Rental Period</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Total</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>Cliente</TableHead>
+                        <TableHead>Empresa</TableHead>
+                        <TableHead>Período</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Días</TableHead>
+                        <TableHead>Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -699,20 +701,21 @@ export default function AdminPage({
       <footer className="border-t">
         <div className="container flex flex-col gap-2 py-4 md:h-16 md:flex-row md:items-center md:py-0 px-4 md:px-6">
           <div className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} AudioRent Pro. All rights reserved.
+            © {new Date().getFullYear()} ProSonus. Todos los derechos
+            reservados.
           </div>
           <nav className="md:ml-auto flex gap-4 sm:gap-6">
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Terms of Service
+              Términos y condiciones
             </Link>
             <Link
               href="#"
               className="text-xs hover:underline underline-offset-4"
             >
-              Privacy
+              Privacidad
             </Link>
           </nav>
         </div>

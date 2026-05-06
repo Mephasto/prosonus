@@ -138,7 +138,7 @@ export default function QuoteDetailPage({
         <Button variant="ghost" size="sm" asChild>
           <Link href="/admin">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver a Quotes
+            Volver a presupuestos
           </Link>
         </Button>
       </div>

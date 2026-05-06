@@ -5,7 +5,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ProSonus",
-  description: "Created with v0",
+  description:
+    "Alquiler de equipos de audio profesional para eventos, estudios y producciones.",
   generator: "v0.dev",
 };
 
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="es" className="dark">
       <body>
         <CartProvider>
           <div className="flex flex-col min-h-screen">
