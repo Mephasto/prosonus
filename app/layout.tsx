@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/header";
 import { CartProvider } from "@/contexts/cart-context";
+import { AccentProvider } from "@/contexts/accent-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,10 +20,12 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body>
         <CartProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            {children}
-          </div>
+          <AccentProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              {children}
+            </div>
+          </AccentProvider>
         </CartProvider>
       </body>
     </html>

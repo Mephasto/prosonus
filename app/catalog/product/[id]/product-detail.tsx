@@ -7,6 +7,70 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Product } from "@/lib/types";
 import { formatARS, formatUSD } from "@/lib/prices";
 
+function renderInline(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*|__[^_]+__)/);
+  return parts.map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part))
+      return (
+        <strong key={i} className="font-semibold text-foreground">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    if (/^__[^_]+__$/.test(part))
+      return (
+        <strong key={i} className="font-semibold text-foreground">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    return part;
+  });
+}
+
+function renderDescription(text: string) {
+  const lines = text.split("\n");
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (listItems.length === 0) return;
+    elements.push(
+      <ul
+        key={key++}
+        className="list-disc list-inside space-y-1 text-muted-foreground"
+      >
+        {listItems.map((item, i) => (
+          <li key={i}>{renderInline(item)}</li>
+        ))}
+      </ul>,
+    );
+    listItems = [];
+  };
+
+  for (const line of lines) {
+    const bullet = line.match(/^[-*•]\s+(.+)/);
+    const numbered = line.match(/^\d+\.\s+(.+)/);
+    if (bullet) {
+      listItems.push(bullet[1]);
+    } else if (numbered) {
+      listItems.push(numbered[1]);
+    } else {
+      flushList();
+      if (line.trim() === "") {
+        elements.push(<div key={key++} className="h-2" />);
+      } else {
+        elements.push(
+          <p key={key++} className="text-muted-foreground leading-relaxed">
+            {renderInline(line)}
+          </p>,
+        );
+      }
+    }
+  }
+  flushList();
+  return elements;
+}
+
 const CATEGORY_LABELS: Record<string, string> = {
   MICROPHONES: "Micrófonos",
   MIXERS: "Mezcladores",
@@ -40,7 +104,9 @@ export default function ProductDetail({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          <div className="aspect-square w-full rounded-xl overflow-hidden border border-white/10 bg-white/5">
+          <div
+            className={`aspect-square w-full rounded-xl overflow-hidden border border-white/10${product.imageUrl ? " bg-white" : " bg-white/5"}`}
+          >
             <img
               src={
                 product.imageUrl
@@ -48,7 +114,7 @@ export default function ProductDetail({
                   : `/placeholder.svg?height=600&width=600&text=${encodeURIComponent(product.name)}`
               }
               alt={product.name}
-              className={`object-cover w-full h-full ${!product.imageUrl ? "invert" : ""}`}
+              className={`object-contain w-full h-full${!product.imageUrl ? " invert" : ""}`}
             />
           </div>
 
@@ -160,9 +226,9 @@ export default function ProductDetail({
                     <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
                       Descripción
                     </p>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {product.description}
-                    </p>
+                    <div className="space-y-1.5">
+                      {renderDescription(product.description)}
+                    </div>
                   </div>
                 </div>
               )}

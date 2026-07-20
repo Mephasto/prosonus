@@ -17,6 +17,7 @@ import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useProductFilters } from "@/hooks/use-product-filters";
 import ProductFilterBar from "@/components/product-filter-bar";
 import { formatARS, formatUSD } from "@/lib/prices";
+import { useAccent, ACCENT_META } from "@/contexts/accent-context";
 
 export default function CatalogPage({
   products,
@@ -90,7 +91,9 @@ export default function CatalogPage({
                   </CardHeader>
                 </Link>
                 <CardContent className="flex-1">
-                  <div className="aspect-square relative mb-4">
+                  <div
+                    className={`aspect-square relative mb-4 rounded-md overflow-hidden${product.imageUrl ? " bg-white" : ""}`}
+                  >
                     <img
                       src={
                         product.imageUrl
@@ -98,7 +101,7 @@ export default function CatalogPage({
                           : `/placeholder.svg?height=300&width=300&text=${encodeURIComponent(product.name)}`
                       }
                       alt={product.name}
-                      className={`rounded-md object-cover w-full h-full ${!product.imageUrl ? "invert" : ""}`}
+                      className={`object-contain w-full h-full${!product.imageUrl ? " invert" : ""}`}
                     />
                   </div>
                   <div className="space-y-2">
@@ -125,9 +128,11 @@ export default function CatalogPage({
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium">Especificaciones:</span>
-                      <span className="text-right">{product.specs}</span>
+                      <span className="text-right line-clamp-4">
+                        {product.specs}
+                      </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground line-clamp-4">
                       {product.description}
                     </p>
                   </div>
@@ -179,6 +184,8 @@ const Nav = ({
   catselected: string;
 }) => {
   let cats: Categories = Object.values(categories);
+  const { accent } = useAccent();
+  const accentColor = ACCENT_META[accent].color;
   return (
     <div className="px-4 py-6 sm:px-0 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -186,14 +193,14 @@ const Nav = ({
           <select
             defaultValue={catselected}
             aria-label="Select a tab"
-            className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white/5 py-2 pr-8 pl-3 text-base text-white outline-1 -outline-offset-1 outline-white/10 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+            className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white/5 py-2 pr-8 pl-3 text-base text-white outline-1 -outline-offset-1 outline-white/10 focus:outline-2 focus:-outline-offset-2focus:outline-primary"
           >
             {cats.map((cat) =>
               cat.enum === catselected ? (
                 <option
                   key={cat.enum}
                   value={cat.enum}
-                  className="bg-indigo-500 text-white"
+                  style={{ color: accentColor }}
                 >
                   {cat.name}
                 </option>
@@ -219,10 +226,11 @@ const Nav = ({
                 <li key={cat.enum}>
                   <a
                     href={"" + cat.enum}
-                    className={
-                      cat.enum == catselected
-                        ? "text-indigo-400 lg:p-6 md:p-4 sm:p-4"
-                        : "hover:text-white lg:p-6 md:p-4 sm:p-4"
+                    className="lg:p-6 md:p-4 sm:p-4 transition-colors"
+                    style={
+                      cat.enum === catselected
+                        ? { color: accentColor }
+                        : undefined
                     }
                   >
                     {cat.name}

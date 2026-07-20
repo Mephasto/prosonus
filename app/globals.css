@@ -92,3 +92,30 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Accent colour overrides (dark theme only) ───────────────────────── */
+.dark[data-accent="cyan"] {
+  --primary: 189 90% 50%;
+  --primary-foreground: 0 0% 5%;
+  --ring: 189 90% 50%;
+}
+.dark[data-accent="violet"] {
+  --primary: 250 84% 65%;
+  --primary-foreground: 0 0% 98%;
+  --ring: 250 84% 65%;
+}
+.dark[data-accent="amber"] {
+  --primary: 38 95% 54%;
+  --primary-foreground: 0 0% 5%;
+  --ring: 38 95% 54%;
+}
+.dark[data-accent="emerald"] {
+  --primary: 152 57% 48%;
+  --primary-foreground: 0 0% 98%;
+  --ring: 152 57% 48%;
+}
+.dark[data-accent="rose"] {
+  --primary: 350 85% 62%;
+  --primary-foreground: 0 0% 98%;
+  --ring: 350 85% 62%;
+}

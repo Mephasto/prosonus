@@ -4,9 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
+import { useAccent, ACCENT_META, ACCENTS } from "@/contexts/accent-context";
 
 const Header = () => {
   const { itemCount } = useCart();
+  const { accent, rotate } = useAccent();
+
+  const current = ACCENT_META[accent];
+  const next =
+    ACCENT_META[ACCENTS[(ACCENTS.indexOf(accent) + 1) % ACCENTS.length]];
 
   return (
     <header className="border-b">
@@ -41,6 +47,19 @@ const Header = () => {
             </span>
             <span>Presupuesto</span>
           </Link>
+
+          {/* Accent colour rotator */}
+          <button
+            onClick={rotate}
+            title={`Color actual: ${current.label} — siguiente: ${next.label}`}
+            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium border border-border hover:border-primary transition-colors"
+          >
+            <span
+              className="inline-block h-3 w-3 rounded-full ring-1 ring-white/20 transition-colors duration-300"
+              style={{ background: current.color }}
+            />
+            <span className="text-muted-foreground">Any color you like</span>
+          </button>
         </nav>
       </div>
     </header>

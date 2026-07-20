@@ -11,7 +11,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Headphones, Plus, Pencil, Trash2, Search, Eye } from "lucide-react";
+import {
+  Headphones,
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Eye,
+  Package,
+  Weight,
+  Zap,
+  FileText,
+  Tag,
+  Building2,
+  LayoutGrid,
+  DollarSign,
+  ImageIcon,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -87,6 +103,7 @@ export default function AdminPage({
 
   const handleEditProduct = (product) => {
     setEditingProduct({ ...product });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleUpdateProduct = () => {
@@ -311,6 +328,15 @@ export default function AdminPage({
                           placeholder="Detailed description of the product"
                           rows={3}
                         />
+                        <p className="text-xs text-muted-foreground">
+                          Formato soportado:{" "}
+                          <code className="bg-muted px-1 rounded">
+                            **negrita**
+                          </code>{" "}
+                          ·{" "}
+                          <code className="bg-muted px-1 rounded">- item</code>{" "}
+                          para listas · saltos de línea se respetan
+                        </p>
                       </div>
                       <div className="space-y-2 md:col-span-2">
                         <Label>Imagen del producto</Label>
@@ -348,32 +374,52 @@ export default function AdminPage({
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="edit-name">Nombre del producto</Label>
+                        <Label
+                          htmlFor="edit-name"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <Tag className="h-3.5 w-3.5" />
+                          Nombre del producto
+                        </Label>
                         <Input
                           id="edit-name"
                           name="name"
                           value={editingProduct.name}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-brand">Marca</Label>
+                        <Label
+                          htmlFor="edit-brand"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <Building2 className="h-3.5 w-3.5" />
+                          Marca
+                        </Label>
                         <Input
                           id="edit-brand"
                           name="brand"
                           value={editingProduct.brand}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-category">Categoría</Label>
+                        <Label
+                          htmlFor="edit-category"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <LayoutGrid className="h-3.5 w-3.5" />
+                          Categoría
+                        </Label>
                         <Select
                           onValueChange={(value) =>
                             handleSelectChange(value, "category", true)
                           }
                           value={editingProduct.category}
                         >
-                          <SelectTrigger>
+                          <SelectTrigger className="text-primary">
                             <SelectValue placeholder="Seleccioná una categoría" />
                           </SelectTrigger>
                           <SelectContent>
@@ -394,7 +440,11 @@ export default function AdminPage({
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-price">
+                        <Label
+                          htmlFor="edit-price"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <DollarSign className="h-3.5 w-3.5" />
                           Precio diario de alquiler (USD)
                         </Label>
                         <Input
@@ -403,19 +453,33 @@ export default function AdminPage({
                           type="number"
                           value={editingProduct.price}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-weight">Peso (gramos)</Label>
+                        <Label
+                          htmlFor="edit-weight"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <Weight className="h-3.5 w-3.5" />
+                          Peso (gramos)
+                        </Label>
                         <Input
                           id="edit-weight"
                           name="weight"
                           value={editingProduct.weight}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-stock">Stock</Label>
+                        <Label
+                          htmlFor="edit-stock"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <Package className="h-3.5 w-3.5" />
+                          Stock
+                        </Label>
                         <Input
                           id="edit-stock"
                           name="stock"
@@ -423,29 +487,56 @@ export default function AdminPage({
                           min="0"
                           value={editingProduct.stock ?? ""}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="edit-specs">Especificaciones</Label>
+                        <Label
+                          htmlFor="edit-specs"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <Zap className="h-3.5 w-3.5" />
+                          Especificaciones
+                        </Label>
                         <Input
                           id="edit-specs"
                           name="specs"
                           value={editingProduct.specs ?? ""}
                           onChange={(e) => handleInputChange(e, true)}
+                          className="text-primary"
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="edit-description">Descripción</Label>
+                        <Label
+                          htmlFor="edit-description"
+                          className="text-muted-foreground flex items-center gap-1.5"
+                        >
+                          <FileText className="h-3.5 w-3.5" />
+                          Descripción
+                        </Label>
                         <Textarea
                           id="edit-description"
                           name="description"
                           value={editingProduct.description ?? ""}
                           onChange={(e) => handleInputChange(e, true)}
                           rows={3}
+                          className="text-primary"
                         />
+                        <p className="text-xs text-muted-foreground">
+                          Formato soportado:{" "}
+                          <code className="bg-muted px-1 rounded">
+                            **negrita**
+                          </code>{" "}
+                          ·{" "}
+                          <code className="bg-muted px-1 rounded">- item</code>{" "}
+                          para listas · saltos de línea se respetan
+                        </p>
                       </div>
                       <div className="space-y-2 md:col-span-2">
-                        <Label>Imagen del producto</Label>
+                        <Label className="text-muted-foreground flex items-center gap-1.5">
+                          <ImageIcon className="h-3.5 w-3.5" />
+                          Imagen del producto
+                        </Label>
                         <ImageUpload
                           currentImageUrl={editingProduct.imageUrl}
                           onUpload={(key) =>

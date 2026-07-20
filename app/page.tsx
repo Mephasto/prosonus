@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Headphones, ShieldCheck, Users } from "lucide-react";
+import SoundwaveBackground from "@/components/soundwave-background";
 
 export default function Home() {
   return (
     <div>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted relative overflow-hidden">
+          <SoundwaveBackground />
+          <div className="container px-4 md:px-6 relative z-10">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -33,11 +35,11 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-center">
                 <img
-                  src="/placeholder.svg?height=400&width=400"
+                  src="/DSC01361.jpg"
                   alt="Audio Equipment"
-                  className="rounded-lg object-cover invert"
-                  width={400}
-                  height={400}
+                  className="rounded-lg object-cover w-[50vw] h-auto"
+                  width={800}
+                  height={800}
                 />
               </div>
             </div>

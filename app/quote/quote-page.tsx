@@ -42,6 +42,17 @@ export default function QuotePage({
 }) {
   const { items, hydrated, updateQuantity, removeItem, clearCart } = useCart();
 
+  // Only keep items whose product still exists in the DB
+  const resolvedItems = items
+    .map((item) => ({
+      item,
+      product: products.find((p) => p.id === item.productId),
+    }))
+    .filter(
+      (entry): entry is { item: (typeof items)[0]; product: Product } =>
+        !!entry.product,
+    );
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   const [customerInfo, setCustomerInfo] = useState({
@@ -72,7 +83,7 @@ export default function QuotePage({
   };
 
   const handleSubmitQuote = async () => {
-    if (items.length === 0) {
+    if (resolvedItems.length === 0) {
       alert("Agregá al menos un producto al presupuesto antes de enviarlo.");
       return;
     }
@@ -85,9 +96,9 @@ export default function QuotePage({
     try {
       await dbCreateQuote({
         customer: customerInfo,
-        items: items.map((i) => ({
-          productId: i.productId,
-          quantity: i.quantity,
+        items: resolvedItems.map(({ item }) => ({
+          productId: item.productId,
+          quantity: item.quantity,
         })),
         startDate: dateRange?.from ?? null,
         endDate: dateRange?.to ?? null,
@@ -116,9 +127,8 @@ export default function QuotePage({
       : 1;
 
   // Subtotal diario
-  const dailySubtotal = items.reduce((sum, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    return sum + (product ? product.price * item.quantity : 0);
+  const dailySubtotal = resolvedItems.reduce((sum, { item, product }) => {
+    return sum + product.price * item.quantity;
   }, 0);
 
   const total = dailySubtotal * rentalDays;
@@ -176,15 +186,27 @@ export default function QuotePage({
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {items.length === 0 ? (
+                  {!hydrated ? (
+                    <div className="text-center py-10 text-muted-foreground text-sm">
+                      Cargando...
+                    </div>
+                  ) : resolvedItems.length === 0 ? (
                     <div className="text-center py-10 space-y-4">
                       <ShoppingCart className="mx-auto h-12 w-12 text-muted-foreground/40" />
                       <p className="text-muted-foreground">
                         Todavía no agregaste equipos al presupuesto.
                       </p>
-                      <Button asChild variant="outline">
-                        <Link href="/catalog/all">Ver catálogo</Link>
-                      </Button>
+                      <div className="flex justify-center gap-2">
+                        <Button asChild variant="outline">
+                          <Link href="/catalog/all">Ver catálogo</Link>
+                        </Button>
+                        {items.length > 0 && (
+                          <Button variant="ghost" size="sm" onClick={clearCart}>
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Vaciar carrito
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <Table>
@@ -198,12 +220,7 @@ export default function QuotePage({
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {items.map((item) => {
-                          const product = products.find(
-                            (p) => p.id === item.productId,
-                          );
-                          if (!product) return null;
-
+                        {resolvedItems.map(({ item, product }) => {
                           return (
                             <TableRow key={item.productId}>
                               <TableCell>
@@ -420,10 +437,14 @@ export default function QuotePage({
 
                     <div>
                       <div className="text-sm font-medium mb-2">
-                        Equipos ({items.reduce((s, i) => s + i.quantity, 0)}{" "}
+                        Equipos (
+                        {resolvedItems.reduce(
+                          (s, { item }) => s + item.quantity,
+                          0,
+                        )}{" "}
                         unidades)
                       </div>
-                      {items.length === 0 ? (
+                      {resolvedItems.length === 0 ? (
                         <p className="text-sm text-muted-foreground">
                           Sin equipos aún.{" "}
                           <Link href="/catalog/all" className="underline">
@@ -432,28 +453,22 @@ export default function QuotePage({
                         </p>
                       ) : (
                         <ul className="space-y-1.5">
-                          {items.map((item) => {
-                            const product = products.find(
-                              (p) => p.id === item.productId,
-                            );
-                            if (!product) return null;
-                            return (
-                              <li
-                                key={item.productId}
-                                className="flex justify-between text-sm"
-                              >
-                                <span className="text-muted-foreground">
-                                  {product.name}{" "}
-                                  <span className="font-medium text-foreground">
-                                    ×{item.quantity}
-                                  </span>
+                          {resolvedItems.map(({ item, product }) => (
+                            <li
+                              key={item.productId}
+                              className="flex justify-between text-sm"
+                            >
+                              <span className="text-muted-foreground">
+                                {product.name}{" "}
+                                <span className="font-medium text-foreground">
+                                  ×{item.quantity}
                                 </span>
-                                <span>
-                                  {formatPrice(product.price * item.quantity)}
-                                </span>
-                              </li>
-                            );
-                          })}
+                              </span>
+                              <span>
+                                {formatPrice(product.price * item.quantity)}
+                              </span>
+                            </li>
+                          ))}
                         </ul>
                       )}
                     </div>
