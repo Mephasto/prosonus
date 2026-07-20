@@ -30,6 +30,7 @@ import { useCart } from "@/contexts/cart-context";
 import { formatARS, formatUSD } from "@/lib/prices";
 import { dbCreateQuote } from "@/lib/actions";
 import type { DateRange } from "react-day-picker";
+import { SetupAssistantButton } from "@/components/setup-assistant";
 
 export default function QuotePage({
   products,
@@ -174,12 +175,15 @@ export default function QuotePage({
                 <CardHeader>
                   <CardTitle className="flex justify-between items-center">
                     <span>Equipos seleccionados</span>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href="/catalog/all">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Agregar equipos
-                      </Link>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <SetupAssistantButton />
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href="/catalog/all">
+                          <Plus className="h-4 w-4 mr-2" />
+                          Agregar equipos
+                        </Link>
+                      </Button>
+                    </div>
                   </CardTitle>
                   <CardDescription>
                     Equipos que querés incluir en el presupuesto
