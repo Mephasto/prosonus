@@ -108,6 +108,7 @@ type CreateQuoteInput = {
   startDate?: Date | null;
   endDate?: Date | null;
   totalDays: number;
+  operatorUnits?: number;
 };
 
 export const dbGetQuotes = async () => {
@@ -143,6 +144,7 @@ export const dbCreateQuote = async (data: CreateQuoteInput) => {
       endDate: data.endDate ?? null,
       items: data.items,
       totalDays: data.totalDays,
+      operatorUnits: data.operatorUnits ?? 0,
       status: "PENDING",
       customerId: customer.id,
     },
@@ -167,6 +169,7 @@ export const dbUpdateQuote = async (
     startDate?: Date | null;
     endDate?: Date | null;
     totalDays?: number;
+    operatorUnits?: number;
     status?: Status;
     items?: QuoteItem[];
   },

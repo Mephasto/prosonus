@@ -56,6 +56,7 @@ export type Quote = {
   endDate: Date | null;
   items: QuoteItem[];
   totalDays: number;
+  operatorUnits: number;
   status: QuoteStatus;
   customerId: string;
   customer: QuoteCustomer;

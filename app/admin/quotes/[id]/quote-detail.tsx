@@ -96,7 +96,17 @@ export default function QuoteDetailPage({
     const product = products.find((p) => p.id === item.productId);
     return sum + (product?.price ?? 0) * item.quantity;
   }, 0);
-  const totalUSD = subtotalPerDay * totalDays;
+  const equipmentTotal = subtotalPerDay * totalDays;
+  const armadoMinUSD = exchangeRate > 1 ? 50000 / exchangeRate : 0;
+  const armadoCost =
+    items.length > 0 ? Math.max(armadoMinUSD, equipmentTotal * 0.2) : 0;
+  const operatorUnits = quote.operatorUnits ?? 0;
+  const operatorCost = operatorUnits * 100;
+  const grandTotal = equipmentTotal + armadoCost + operatorCost;
+
+  const fp = (usd: number) =>
+    exchangeRate > 1 ? formatARS(usd, exchangeRate) : formatUSD(usd);
+  const fpUSD = (usd: number) => formatUSD(usd);
 
   // ── Handlers ──
   const handleSaveStatus = async () => {
@@ -273,10 +283,10 @@ export default function QuoteDetailPage({
                         {item.quantity}
                       </TableCell>
                       <TableCell className="text-right">
-                        {product ? formatUSD(product.price) : "—"}
+                        {product ? fp(product.price) : "—"}
                       </TableCell>
                       <TableCell className="text-right">
-                        {product ? formatUSD(linePrice) : "—"}
+                        {product ? fp(linePrice) : "—"}
                       </TableCell>
                     </TableRow>
                   );
@@ -286,22 +296,67 @@ export default function QuoteDetailPage({
 
             <Separator className="my-4" />
 
-            <div className="space-y-1.5 text-sm">
+            <div className="space-y-2 text-sm">
+              {/* Equipment subtotal */}
               <div className="flex justify-between text-muted-foreground">
                 <span>
-                  Subtotal/día × {totalDays} día{totalDays !== 1 ? "s" : ""}
+                  Subtotal equipos/día × {totalDays} día
+                  {totalDays !== 1 ? "s" : ""}
                 </span>
                 <span>
-                  {formatUSD(subtotalPerDay)} × {totalDays}
+                  {fp(subtotalPerDay)} × {totalDays}
                 </span>
               </div>
+              <div className="flex justify-between">
+                <span>Equipos</span>
+                <span>{fp(equipmentTotal)}</span>
+              </div>
+
+              {/* Transporte, armado y desarmado */}
+              {armadoCost > 0 && (
+                <div className="flex justify-between">
+                  <span>Transporte, armado y desarmado</span>
+                  <div className="text-right">
+                    <div>{fp(armadoCost)}</div>
+                    {exchangeRate > 1 && (
+                      <div className="text-xs text-muted-foreground">
+                        {fpUSD(armadoCost)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Operador de evento */}
+              {operatorUnits > 0 && (
+                <div className="flex justify-between">
+                  <span>
+                    Operador de evento
+                    <span className="text-muted-foreground ml-1">
+                      ×{operatorUnits} ({operatorUnits * 2} hs)
+                    </span>
+                  </span>
+                  <div className="text-right">
+                    <div>{fp(operatorCost)}</div>
+                    {exchangeRate > 1 && (
+                      <div className="text-xs text-muted-foreground">
+                        {fpUSD(operatorCost)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <Separator className="my-2" />
+
+              {/* Grand total */}
               <div className="flex justify-between font-semibold text-base">
                 <span>Total</span>
                 <div className="text-right">
-                  <div>{formatUSD(totalUSD)}</div>
+                  <div>{fp(grandTotal)}</div>
                   {exchangeRate > 1 && (
                     <div className="text-xs font-normal text-muted-foreground">
-                      {formatARS(totalUSD, exchangeRate)}
+                      {fpUSD(grandTotal)}
                     </div>
                   )}
                 </div>

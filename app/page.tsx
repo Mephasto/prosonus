@@ -84,11 +84,11 @@ export default function Home() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                   <Users className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold">Gestión de inventario</h3>
+                <h3 className="text-xl font-bold">Asesoramiento técnico</h3>
                 <p className="text-center text-muted-foreground">
-                  El equipo de administración gestiona el catálogo, actualiza la
-                  información de los productos y hace seguimiento de los
-                  alquileres.
+                  Nuestro equipo te ayuda a armar el setup ideal para tu evento:
+                  micrófonos, mixer, PA y cables, todo coordinado para que el
+                  sonido funcione a la perfección.
                 </p>
               </div>
             </div>

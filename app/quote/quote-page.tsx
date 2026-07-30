@@ -66,6 +66,7 @@ export default function QuotePage({
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [operatorUnits, setOperatorUnits] = useState(0);
 
   const handleQuantityChange = (productId: string, delta: number) => {
     const item = items.find((i) => i.productId === productId);
@@ -104,6 +105,7 @@ export default function QuotePage({
         startDate: dateRange?.from ?? null,
         endDate: dateRange?.to ?? null,
         totalDays: rentalDays,
+        operatorUnits,
       });
       setSubmitted(true);
       clearCart();
@@ -132,7 +134,13 @@ export default function QuotePage({
     return sum + product.price * item.quantity;
   }, 0);
 
-  const total = dailySubtotal * rentalDays;
+  const equipmentTotal = dailySubtotal * rentalDays;
+  // Minimum ARS 50,000 converted to USD for internal consistency
+  const armadoMinUSD = exchangeRate > 1 ? 50000 / exchangeRate : 0;
+  const armadoCost =
+    resolvedItems.length > 0 ? Math.max(armadoMinUSD, equipmentTotal * 0.2) : 0;
+  const operatorCost = operatorUnits * 100;
+  const total = equipmentTotal + armadoCost + operatorCost;
 
   const formatPrice = (usd: number) =>
     exchangeRate > 1 ? formatARS(usd, exchangeRate) : formatUSD(usd);
@@ -332,6 +340,80 @@ export default function QuotePage({
                 </CardContent>
               </Card>
 
+              {/* Servicios adicionales */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Servicios adicionales</CardTitle>
+                  <CardDescription>
+                    Servicios de soporte técnico para tu evento
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Armado y desarmado */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium">
+                        Transporte, armado y desarmado
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Traslado de equipos, montaje completo del sistema y
+                        desmontaje al finalizar el evento.
+                      </p>
+                    </div>
+                    <span className="text-sm font-medium">
+                      {resolvedItems.length > 0 ? (
+                        formatPrice(armadoCost)
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </span>
+                  </div>
+
+                  <Separator />
+
+                  {/* Operador de evento */}
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">Operador de evento</p>
+                      <p className="text-xs text-muted-foreground">
+                        Por 2 horas · {formatPrice(100)} c/u
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() =>
+                          setOperatorUnits((u) => Math.max(0, u - 1))
+                        }
+                        disabled={operatorUnits === 0}
+                      >
+                        <Minus className="h-3 w-3" />
+                      </Button>
+                      <span className="w-6 text-center text-sm font-medium">
+                        {operatorUnits}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() => setOperatorUnits((u) => u + 1)}
+                      >
+                        <Plus className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    <span className="text-sm font-medium w-24 text-right">
+                      {operatorUnits > 0 ? (
+                        formatPrice(operatorCost)
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Datos del cliente */}
               <Card>
                 <CardHeader>
@@ -482,7 +564,7 @@ export default function QuotePage({
                     <div className="space-y-1.5">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">
-                          Subtotal/día:
+                          Subtotal equipos/día:
                         </span>
                         <span>{formatPrice(dailySubtotal)}</span>
                       </div>
@@ -492,6 +574,26 @@ export default function QuotePage({
                           × {rentalDays} día{rentalDays !== 1 ? "s" : ""}
                         </span>
                       </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Equipos:</span>
+                        <span>{formatPrice(equipmentTotal)}</span>
+                      </div>
+                      {resolvedItems.length > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            Transporte, armado y desarmado:
+                          </span>
+                          <span>{formatPrice(armadoCost)}</span>
+                        </div>
+                      )}
+                      {operatorUnits > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            Operador ×{operatorUnits}:
+                          </span>
+                          <span>{formatPrice(operatorCost)}</span>
+                        </div>
+                      )}
                       <Separator className="my-2" />
                       <div className="flex justify-between font-semibold text-lg">
                         <span>Total estimado:</span>

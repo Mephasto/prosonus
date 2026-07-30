@@ -35,16 +35,17 @@ model StoreConfig {
 }
 
 model Quote {
-  id         Int       @id @default(autoincrement())
-  startDate  DateTime?
-  endDate    DateTime?
-  items      Json
-  totalDays  Int       @default(1)
-  status     Status    @default(PENDING)
-  customerId String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  customer   Customer  @relation(fields: [customerId], references: [id])
+  id            Int       @id @default(autoincrement())
+  startDate     DateTime?
+  endDate       DateTime?
+  items         Json
+  totalDays     Int       @default(1)
+  operatorUnits Int       @default(0)
+  status        Status    @default(PENDING)
+  customerId    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  customer      Customer  @relation(fields: [customerId], references: [id])
 }
 
 model Customer {
